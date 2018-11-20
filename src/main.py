@@ -1,6 +1,6 @@
 import Weapons
 
-revolver = Weapons.Revolver("Revolver", 6, "Double")
+revolver = Weapons.Revolver.Revolver("Revolver", 6, "Double")
 
 ammocount = 10
 
