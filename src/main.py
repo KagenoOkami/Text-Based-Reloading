@@ -1,29 +1,8 @@
 import Weapons
 
-revolver = Weapons.Weapon("revolver", 6)
+revolver = Weapons.Revolver("Revolver", 6, "Double")
 
 ammocount = 10
 
-# Fire when unloaded; Fail
-revolver.fire()
-
-# Load then fire; Success
-revolver.load()
-revolver.fire()
-
-# Fire without reloading; Fail
-revolver.fire()
-
-#empty interal storage; Fail
-revolver.load()
-revolver.fire()
-revolver.load()
-revolver.fire()
-revolver.load()
-revolver.fire()
-revolver.load()
-revolver.fire()
-revolver.load()
-revolver.fire()
-revolver.load()
-revolver.fire()
+print(revolver.Open_Cylinder)
+print(revolver.name)
