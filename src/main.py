@@ -7,13 +7,42 @@ revolver = Revolvers.Revolver(
                              loading_action = Revolvers.Loading_action.Swing
                             )
 
-ammocount = 10
+print("")
+
+revolver.action_open_cylinder()
+revolver.action_lookat_cylinder()
+
+revolver.action_load()
+revolver.action_rotate_cylinder(-1)
+revolver.action_load()
+revolver.action_rotate_cylinder(-1)
+revolver.action_load()
+revolver.action_rotate_cylinder(-1)
+
+revolver.action_lookat_cylinder()
+
+revolver.action_close_cylinder()
+
+revolver.action_fire()
+revolver.action_fire()
+revolver.action_fire()
 
 
 revolver.action_open_cylinder()
 revolver.action_lookat_cylinder()
-#revolver.action_close_cylinder()
 
-revolver.cock_hammer()
 
-revolver.action_fire()
+print("")
+
+revolver.action_extract(using_speedextractor=True)
+revolver.action_lookat_cylinder()
+
+
+
+
+
+
+
+
+
+

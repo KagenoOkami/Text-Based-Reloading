@@ -36,38 +36,49 @@ class Revolver():
 
 	name = None
 
-	action_type = None
+	hammer_action_is = None
 
-	loading_action = None
+	loading_action_is = None
 
 	is_hammer_cocked = False
 	
 	is_cylinder_open = False
+	
+	has_speed_extractor = False
+	
+	cartridge = None
 
-	# Complex Cylinder object. Might beinteresting to make an object. Or not.
+	# Complex Cylinder container object. Just a list.
 	cylinder = []
 
 	# Which part of the cylinder is on top. Counts clockwise.
 	cylinder_top = 0
 
-	def __init__( self, name = "Default", cylinder_chamber_count = 6, action_type = Hammer_action.DAT, loading_action = Loading_action.Swing ):
+	def __init__( self, name = "Default", cylinder_chamber_count = 6, action_type = Hammer_action.DAT, loading_action = Loading_action.Swing, has_speedextractor = False ):
 		
 		self.name = name
 
-#		self.cylinder = [None]*cylinder_chamber_count
-		self.cylinder = [1]*cylinder_chamber_count # Debug line
+		self.cylinder = [None]*cylinder_chamber_count
+#		self.cylinder = [1]*cylinder_chamber_count # Debug line
 
-		self.action_type = action_type
-		self.loading_action = loading_action
+		self.hammer_action_is = action_type
+		self.loading_action_is = loading_action
+		self.has_speed_extractor = has_speedextractor
 
 		print("Made the revolver type weapon \"" +self.name+"\"" )
+		print("\t Action:",self.hammer_action_is)
+		print("\t Loading:",self.loading_action_is)
+		print("\t Cylinder size:",len(self.cylinder),"cardridges")
+		print("\t Speedextractor:",self.has_speed_extractor)
 
+	def __repr__(self):
+		return "Captured rerp function, but didn't implement it yet"
 
 	def action_fire(self):
-
+		print("Firing", self.name)
 		# If the action is Double Action Trigger, cock the hammer
-		if self.action_type == Hammer_action.DAT:
-			self.cock_hammer()
+		if self.hammer_action_is == Hammer_action.DAT:
+			self.action_cock_hammer()
 
 		if self.is_hammer_cocked == True:
 			self.is_hammer_cocked = False
@@ -77,19 +88,19 @@ class Revolver():
 					self.cylinder[self.cylinder_top] = 0
 					
 					# If the action is Double Action Recoil, cock the hammer
-					if self.action_type == Hammer_action.DAR:
-						self.cock_hammer()
-				else:
-					print("The hammer struck, but the cylinder was open")
+					if self.hammer_action_is == Hammer_action.DAR:
+						self.action_cock_hammer()
 
+				else:
+					print("There was no armed cartridge")
 			else:
-				print("There was no cartridge loaded")
+				print("The hammer struck, but the cylinder was open")
 		else:
 			print("The hammer wasn't cocked")
 
-	def cock_hammer(self):
+	def action_cock_hammer(self):
 		if self.is_hammer_cocked == False:
-			print("Cocked hammer")
+			print("Cocking hammer")
 			self.is_hammer_cocked = True
 			self.action_rotate_cylinder()
 
@@ -116,22 +127,48 @@ class Revolver():
 			self.is_cylinder_open = False
 			print("Closed cylinder")
 		else:
-			print("Cylinder was already close")
+			print("Cylinder was already closed")
 	
 	def action_lookat_cylinder(self):
 		if self.is_cylinder_open == True:
-			if self.loading_action == Loading_action.Swing:
+			if self.loading_action_is == Loading_action.Swing:
 				
 				print(self.cylinder)
-				mu = " "+"   "*self.cylinder_top+"^" 
-				print(mu)
-				#[1, 1, 1, 1, 1, 1]
-				#0
+				print(self.cylinder_top)
+			else:
+				print("Weapon is of unimplemented loading type")
 		else:
 			print("The cylinder is closed. Not much to look at.")
 			
+	def action_extract(self, using_speedextractor = False):
+		
+		if self.is_cylinder_open == True:
+			if using_speedextractor == True:
+				for i in range(len(self.cylinder)):
+					self.cylinder[i] = None
+				print("extracted all cardridges with a speed extractor")
+			else:
+				print("No code for extracting individual cardridge")
+		else:
+			print("Can't extract cardridges if the cylinder is closed")
+	
+	def action_load(self, using_speedloader = False):
+		
+		if self.is_cylinder_open == True:
 			
-			
+			if using_speedloader == True:
+				print("No code for speedloading")
+			else:
+				if self.cylinder[self.cylinder_top] == None:
+					
+					print("Loading cartridge")
+					self.cylinder[self.cylinder_top] = 1
+					
+				else:
+					print("There is something in this spot")
+				
+		else:
+			print("Can't load cartridges if the cylinder is closed")
 			
 			
 			
