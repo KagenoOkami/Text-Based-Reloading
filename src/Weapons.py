@@ -1,1 +1,1 @@
-import Revolver
+import Revolvers

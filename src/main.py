@@ -1,8 +1,19 @@
-import Weapons
+from Weapons import Revolvers
 
-revolver = Weapons.Revolver.Revolver("Revolver", 6, "Double")
+revolver = Revolvers.Revolver(
+                             name = "Revolver",
+                             cylinder_chamber_count = 6,
+                             action_type = Revolvers.Hammer_action.DAT,
+                             loading_action = Revolvers.Loading_action.Swing
+                            )
 
 ammocount = 10
 
-print(revolver.Open_Cylinder)
-print(revolver.name)
+
+revolver.action_open_cylinder()
+revolver.action_lookat_cylinder()
+#revolver.action_close_cylinder()
+
+revolver.cock_hammer()
+
+revolver.action_fire()
