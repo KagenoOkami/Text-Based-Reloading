@@ -19,17 +19,12 @@ class Hammer_action(Enum):
 	DAT = 3
 
 class Loading_action(Enum):
-	# Front; Powder and Bullet have to be loaded seperatly.
-	Front = 1
 	
 	# Fixed; Rounds can only be loaded one at a time.
-	Fixed = 2
-	
-	# Break; cylinder and barrel hing forward
-	Break = 3
+	Fixed = 1
 	
 	# Swing; cylinder swings to the side
-	Swing = 4
+	Swing = 2
 
 
 class Revolver():
@@ -42,7 +37,7 @@ class Revolver():
 
 	is_hammer_cocked = False
 	
-	is_cylinder_open = False
+	is_action_open = False
 	
 	has_speed_extractor = False
 	
@@ -82,7 +77,7 @@ class Revolver():
 
 		if self.is_hammer_cocked == True:
 			self.is_hammer_cocked = False
-			if self.is_cylinder_open == False:
+			if self.is_action_open == False:
 				if self.cylinder[self.cylinder_top] == 1:
 					print("Firing round")
 					self.cylinder[self.cylinder_top] = 0
@@ -116,21 +111,21 @@ class Revolver():
 		pass
 			
 	def action_open_cylinder(self):
-		if self.is_cylinder_open == False:
-			self.is_cylinder_open = True
+		if self.is_action_open == False:
+			self.is_action_open = True
 			print("Opened cylinder")
 		else:
 			print("Cylinder was already open")
 	
 	def action_close_cylinder(self):
-		if self.is_cylinder_open == True:
-			self.is_cylinder_open = False
+		if self.is_action_open == True:
+			self.is_action_open = False
 			print("Closed cylinder")
 		else:
 			print("Cylinder was already closed")
 	
 	def action_lookat_cylinder(self):
-		if self.is_cylinder_open == True:
+		if self.is_action_open == True:
 			if self.loading_action_is == Loading_action.Swing:
 				
 				print(self.cylinder)
@@ -142,7 +137,7 @@ class Revolver():
 			
 	def action_extract(self, using_speedextractor = False):
 		
-		if self.is_cylinder_open == True:
+		if self.is_action_open == True:
 			if using_speedextractor == True:
 				for i in range(len(self.cylinder)):
 					self.cylinder[i] = None
@@ -154,7 +149,7 @@ class Revolver():
 	
 	def action_load(self, using_speedloader = False):
 		
-		if self.is_cylinder_open == True:
+		if self.is_action_open == True:
 			
 			if using_speedloader == True:
 				print("No code for speedloading")
