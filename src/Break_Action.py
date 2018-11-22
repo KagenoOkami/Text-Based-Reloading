@@ -10,24 +10,31 @@ class Shotgun():
 
     name = None
 
-    is_hammer_cocked = False
+    is_hammer_cocked = [False, False]
     
     is_action_open = False
 
-    # Complex Cylinder container object. Just a list.
-    barrels = [None]
+    # Complex action container object. Just a list.
+    barrels = [None, None]
     
-    doables = { "fire" : lambda self : self.action_fire(),
+    doables = { "firel" : lambda self : self.action_fire(0),
+                "firer" : lambda self : self.action_fire(1),
+                "fire" : lambda self : self.action_fire('b'),
+                "cockl" : lambda self : self.action_cock_hammer(0),
+                "cockr" : lambda self : self.action_cock_hammer(1),
+                "cock" : lambda self : self.action_cock_hammer('b'),
+                "extractl" : lambda self : self.action_extract(0),
+                "extractr" : lambda self : self.action_extract(1),
+                "extract" : lambda self : self.action_extract('b'),
+                "loadl" : lambda self : self.action_load(0),
+                "loadr" : lambda self : self.action_load(1),
                 "open" : lambda self : self.action_open_action(),
                 "close" : lambda self : self.action_close_action(),
                 "look" : lambda self : self.action_lookat_action(),
-                "cock" : lambda self : self.action_cock_hammer(),
-                "actions" : lambda self : self.get_actions(),
-                "extract" : lambda self : self.action_extract(),
-                "load" : lambda self : self.action_load()
+                "actions" : lambda self : self.get_actions()
                 }
 
-    def __init__( self, name = "Default", is_doubleAction = True, barrel_count = 1 ):
+    def __init__( self, name = "Default", is_doubleAction = False, barrel_count = 1 ):
         
         self.name = name
         self.is_doubleAction = is_doubleAction
@@ -39,34 +46,42 @@ class Shotgun():
     def __repr__(self):
         return "Captured rerp function, but didn't implement it yet"
 
-    def action_fire(self, shoot_barrel = -1):
-        print("Firing", self.name,"barrel", shoot_barrel+1)
+    def action_fire(self, barrel = 'b'):
         
-        if self.is_hammer_cocked == True:
-            self.is_hammer_cocked = False
-            
-            if self.is_action_open == False:
+        if barrel == 'b':
+            self.action_fire(0)
+            self.action_fire(1)
+        else:
+            print("Firing", self.name,"barrel", barrel+1)
+            if self.is_hammer_cocked[barrel] == True:
+                self.is_hammer_cocked[barrel] = False
                 
-                if self.barrels[shoot_barrel] == 1:
-                    print("Firing round")
-                    '''
-                    if self.is_doubleAction:
-                        # If the action is Double Action Trigger, cock the hammer
-                        self.action_cock_hammer(shoot_barrel)
-                    '''
+                if self.is_action_open == False:
+                    
+                    if self.barrels[barrel] == 1:
+                        print("Firing round")
+                        self.barrels[barrel] = 0
+                        if self.is_doubleAction:
+                            # If the action is Double Action Trigger, cock the hammer
+                            self.action_cock_hammer(barrel)
+                    else:
+                        print("There was no armed cartridge")
                 else:
-                    print("There was no armed cartridge")
+                    print("The hammer struck, but the cylinder was open")
             else:
-                print("The hammer struck, but the cylinder was open")
-        else:
-            print("The hammer wasn't cocked")
+                print("The hammer wasn't cocked")
 
-    def action_cock_hammer(self):
-        if self.is_hammer_cocked == False:
-            print("Cocking hammer")
-            self.is_hammer_cocked = True
+    def action_cock_hammer(self, barrel = 'b'):
+        
+        if barrel == 'b':
+            self.action_cock_hammer(0)
+            self.action_cock_hammer(1)
         else:
-            print("Hammer was already cocked")
+            if self.is_hammer_cocked[barrel] == False:
+                print("Cocking hammer")
+                self.is_hammer_cocked[barrel] = True
+            else:
+                print("Hammer was already cocked")
             
     def action_open_action(self):
         if self.is_action_open == False:
@@ -88,29 +103,32 @@ class Shotgun():
         else:
             print("The action is closed. Not much to look at.")
             
-    def action_extract(self):
+    def action_extract(self, barrel = 'b'):
         
         if self.is_action_open == True:
-            for i in range(len(self.barrels)):
-                self.barrels[i] = None
-            print("ejecting al cardriges")
+            if barrel == 'b':
+                print("ejecting all cardriges")
+                self.action_extract(0)
+                self.action_extract(1)
+            else:
+                self.barrels[barrel] = None
         else:
             print("Can't extract cardridges if the action is closed")
     
-    def action_load(self):
+    def action_load(self, barrel):
         
         if self.is_action_open == True:
-            if self.barrels[0] == None:
+            if self.barrels[barrel] == None:
                 
                 print("Loading cartridge")
-                self.barrels[0] = 1
+                self.barrels[barrel] = 1
             else:
                 print("There is something in this spot")
         else:
             print("Can't load cartridges if the action is closed")
             
     def get_actions(self):
-        for i in self.doables.keys():
+        for i in sorted(self.doables.keys()):
             print(i)
     
     

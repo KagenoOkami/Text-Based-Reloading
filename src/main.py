@@ -11,7 +11,7 @@ import Break_Action
 import subprocess
 
 revolver = Revolvers.Revolver( name = "Revolver" )
-shotgun =  Break_Action.Shotgun( name = "Shotgun" )
+shotgun =  Break_Action.Shotgun( name = "Shotgun", barrel_count = 2 )
 
 
 print("")
