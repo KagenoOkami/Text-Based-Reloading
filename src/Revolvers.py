@@ -48,6 +48,8 @@ class Revolver():
 
 	# Which part of the cylinder is on top. Counts clockwise.
 	cylinder_top = 0
+	
+	doables = {}
 
 	def __init__( self, name = "Default", cylinder_chamber_count = 6, action_type = Hammer_action.DAT, loading_action = Loading_action.Swing, has_speedextractor = False ):
 		
@@ -65,6 +67,18 @@ class Revolver():
 		print("\t Loading:",self.loading_action_is)
 		print("\t Cylinder size:",len(self.cylinder),"cardridges")
 		print("\t Speedextractor:",self.has_speed_extractor)
+		
+		self.doables = {	"fire" : lambda self : self.action_fire(),
+							    "open action" : lambda self : self.action_open_cylinder(),
+							    "close action" : lambda self : self.action_close_cylinder(),
+							    "look at action" : lambda self : self.action_lookat_cylinder(),
+							    "cock hammer" : lambda self : self.action_cock_hammer(),
+							    "get actions" : lambda self : self.get_actions(),
+							    "extract" : lambda self : self.action_extract(),
+							    "load" : lambda self : self.action_load(),
+							    "rotate action" : lambda self : self.action_rotate_cylinder(),
+			   				}
+		self.doables.setdefault("get actions")
 
 	def __repr__(self):
 		return "Captured rerp function, but didn't implement it yet"
@@ -97,12 +111,12 @@ class Revolver():
 		if self.is_hammer_cocked == False:
 			print("Cocking hammer")
 			self.is_hammer_cocked = True
-			self.action_rotate_cylinder()
+			self.action_rotate_cylinder(1)
 
 		else:
 			print("Hammer was already cocked")
 			
-	def action_rotate_cylinder(self, rotate = 1):
+	def action_rotate_cylinder(self, rotate = -1):
 		
 		self.cylinder_top += rotate
 		# prevent overflow
@@ -166,27 +180,13 @@ class Revolver():
 			print("Can't load cartridges if the cylinder is closed")
 			
 	def get_actions(self):
-		print("fire")
-		print("cock_hammer")
-		print("rotate_cylinder")
-		print("open_cylinder")
-		print("close_cylinder")
-		print("lookat_cylinder")
-		print("extract")
-		print("load")
+		for i in self.doables.keys():
+			print(i)
 	
 	
-	doables = None
-	doables_done = False
-		
+	
 	def do(self, var):
-		{	"fire" : self.action_fire(),
-		    "open action" : self.action_open_cylinder(),
-		    "close action" : self.action_close_cylinder(),
-		    "look at action" : self.action_close_cylinder(),
-		    "cock hammer" : self.action_cock_hammer()
+		self.doables.get(var,lambda self : self.get_actions() )(self)
 		
-		}.get(var, default = "invalid action")
-			
 			
 			
