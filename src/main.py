@@ -1,14 +1,17 @@
-from Weapons import Revolvers
+import Revolvers
+
+import Break_Action
+
+#Bolt_Action
+#Pump_Action
+#Lever_Action
+    
+#Self_Loading
 
 import subprocess
 
-revolver = Revolvers.Revolver(
-                             name = "Revolver",
-                             cylinder_chamber_count = 6,
-                             action_type = Revolvers.Hammer_action.DAT,
-                             loading_action = Revolvers.Loading_action.Swing
-                            )
-
+revolver = Revolvers.Revolver( name = "Revolver" )
+shotgun =  Break_Action.Shotgun( name = "Shotgun" )
 
 
 print("")
@@ -17,12 +20,12 @@ loop = True
 
 while loop:
 
-    var = input("---:").lower()
+    var = input("shotgun:").lower()
     
     if var == "exit":
         loop = False
     else:
-        revolver.do(var)
+        shotgun.do(var)
 
 
 
