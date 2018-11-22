@@ -165,9 +165,28 @@ class Revolver():
 		else:
 			print("Can't load cartridges if the cylinder is closed")
 			
-			
-			
-			
+	def get_actions(self):
+		print("fire")
+		print("cock_hammer")
+		print("rotate_cylinder")
+		print("open_cylinder")
+		print("close_cylinder")
+		print("lookat_cylinder")
+		print("extract")
+		print("load")
+	
+	
+	doables = None
+	doables_done = False
+		
+	def do(self, var):
+		{	"fire" : self.action_fire(),
+		    "open action" : self.action_open_cylinder(),
+		    "close action" : self.action_close_cylinder(),
+		    "look at action" : self.action_close_cylinder(),
+		    "cock hammer" : self.action_cock_hammer()
+		
+		}.get(var, default = "invalid action")
 			
 			
 			

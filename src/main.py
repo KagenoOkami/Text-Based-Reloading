@@ -1,5 +1,7 @@
 from Weapons import Revolvers
 
+import subprocess
+
 revolver = Revolvers.Revolver(
                              name = "Revolver",
                              cylinder_chamber_count = 6,
@@ -7,36 +9,24 @@ revolver = Revolvers.Revolver(
                              loading_action = Revolvers.Loading_action.Swing
                             )
 
-print("")
-
-revolver.action_open_cylinder()
-revolver.action_lookat_cylinder()
-
-revolver.action_load()
-revolver.action_rotate_cylinder(-1)
-revolver.action_load()
-revolver.action_rotate_cylinder(-1)
-revolver.action_load()
-revolver.action_rotate_cylinder(-1)
-
-revolver.action_lookat_cylinder()
-
-revolver.action_close_cylinder()
-
-revolver.action_fire()
-revolver.action_fire()
-revolver.action_fire()
-
-
-revolver.action_open_cylinder()
-revolver.action_lookat_cylinder()
 
 
 print("")
 
-revolver.action_extract(using_speedextractor=True)
-revolver.action_lookat_cylinder()
+loop = True
 
+while loop:
+
+    var = input("---:").lower()
+    
+    if var == "exit":
+        loop = False
+    else:
+        revolver.do(var)
+
+
+
+print("Ending program")
 
 
 

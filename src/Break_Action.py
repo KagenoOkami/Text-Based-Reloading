@@ -43,7 +43,7 @@ class Break_Action():
     # Complex barrel container object. Just a list of all the barrels it has.
     barrels = []
 
-    def __init__( self, name = "Default", barrel_count = 1, action_type = Hammer_action.DAT, loading_action = Loading_action.Swing, can_selfextract = False ):
+    def __init__( self, name = "Default", barrel_count = 1, action_type = Hammer_action.DAT, loading_action = Loading_action.Break, can_selfextract = False ):
         
         self.name = name
 
