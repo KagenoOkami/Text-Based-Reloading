@@ -12,13 +12,13 @@ class enum_bolt_position(Enum):
     # Opened and ready for loading: extracts, ejects, cocks
     open = 2
 
-class Bolt_Action_Rifle():
+class Pump_Action():
 
     name = None
 
     is_hammer_cocked = False
     
-    bolt_position =  [enum_bolt_position.closed, enum_bolt_rotation.down]
+    bolt_position =  enum_bolt_position.closed
 
     # Complex action container object. Just a list.
     magazine = []
@@ -55,7 +55,7 @@ class Bolt_Action_Rifle():
         if self.is_hammer_cocked == True:
             self.is_hammer_cocked = False
             
-            if self.bolt_position == [enum_bolt_position.closed, enum_bolt_rotation.down]:
+            if self.bolt_position == enum_bolt_position.closed:
                 
                 if self.chamber == 1:
                     print("Firing round")
@@ -66,40 +66,45 @@ class Bolt_Action_Rifle():
                 print("The chamber isn't closed")
         else:
             print("The hammer wasn't cocked")
+
+    def action_cock_hammer(self):
+        
+        if self.is_hammer_cocked == False:
+            print("Cocking hammer")
+            self.is_hammer_cocked = True
+        else:
+            print("Hammer was already cocked")
             
     def action_open_bolt(self, toPosition = enum_bolt_position.open):
         
-        if self.bolt_position[0] != toPosition:
-            if self.bolt_position[1] == enum_bolt_rotation.up:
-                self.bolt_position[0] = enum_bolt_position.open
-                print("Opened bolt")
-                
-                # When the bolt is returned fully, anything in the chamber is ejected regardless
-                self.action_eject_chamber()
-            else:
-                print("Can't pull, bolt is down")
+        if self.bolt_position != toPosition:
+            self.bolt_position = enum_bolt_position.open
+            print("Opened bolt")
+            self.action_cock_hammer()
+            # When the bolt is drawn fully, anything in the chamber is ejected regardless
+            self.action_eject_chamber()
         else:
             print("The bolt is already open")
     
     
     def action_open_bolt_half(self, toPosition = enum_bolt_position.half):
         
-        if self.bolt_position[0] != toPosition:
-            self.bolt_position[0] = enum_bolt_position.half
+        if self.bolt_position != toPosition:
+            self.bolt_position = enum_bolt_position.half
             print("Half opened bolt")
         else:
             print("The bolt is already half open")
     
     def action_close_bolt(self, toPosition = enum_bolt_position.closed):
-        if self.bolt_position[0] != toPosition:
-            self.bolt_position[0] = enum_bolt_position.closed
+        if self.bolt_position != toPosition:
+            self.bolt_position = enum_bolt_position.closed
             self.chamber_from_magazine()
             print("Closed bolt")
         else:
             print("The bolt is already closed")
     
     def action_look(self):
-        if self.bolt_position[0] != enum_bolt_position.closed:
+        if self.bolt_position != enum_bolt_position.closed:
             print("Chamber:",self.chamber)
             print("debug: Magazine:", self.magazine)
             if self.magazine:
@@ -126,7 +131,7 @@ class Bolt_Action_Rifle():
         # Use Pop() and Push() to the magazine list (HAH, I'm a genius
         # Just don't allow more pushing than the magazine is large!
         
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
@@ -138,7 +143,7 @@ class Bolt_Action_Rifle():
             print("Can't load cartridges if the action is closed.")
             
     def action_load_chamber(self):
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             if self.chamber == None:
                 self.chamber = 1
                 print("Loading cartridge into magazine")
@@ -150,7 +155,7 @@ class Bolt_Action_Rifle():
     def action_eject_chamber(self):
         
         # This check shouldn't be nessasery, but safety first
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             
             if self.chamber != None:
                 print("ejecting cardridge")
