@@ -44,7 +44,7 @@ class Pump_Action():
         
         self.magazine_size = magazine_size
         
-        print("Made the bolt action type weapon \"" +self.name+"\"" )
+        print("Made a Pump Action type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
         return "Captured rerp function, but didn't implement it yet"

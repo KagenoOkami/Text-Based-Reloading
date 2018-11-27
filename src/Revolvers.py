@@ -36,7 +36,7 @@ class Revolver():
 		self.name = name
 		self.is_doubleAction = is_doubleAction
 		
-		print("Made the revolver type weapon \"" +self.name+"\"" )
+		print("Made a revolver type weapon \"" +self.name+"\"" )
 
 	def __repr__(self):
 		return "Captured rerp function, but didn't implement it yet"

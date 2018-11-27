@@ -38,7 +38,7 @@ class Shotgun():
         
         self.barrels = [None]*barrel_count
         
-        print("Made the revolver type weapon \"" +self.name+"\"" )
+        print("Made a Break Action type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
         return "Captured rerp function, but didn't implement it yet"

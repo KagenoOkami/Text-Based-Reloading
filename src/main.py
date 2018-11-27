@@ -11,12 +11,13 @@ import Self_Chambering
 import subprocess
 
 revolver = Revolvers.Revolver( name = "Revolver" )
-shotgun =  Break_Action.Shotgun( name = "Shotgun", barrel_count = 2 )
-bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle( name = "Rifle", magazine_size = 3)
+shotgun =  Break_Action.Shotgun( name = "Double Barrel Shotgun", barrel_count = 2 )
+bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle( name = "Bolt Action Rifle", magazine_size = 3)
 shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size = 3)
+pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
 
-inhand = shotgun2
+inhand = pistol
 
 
 print("")
