@@ -1,26 +1,14 @@
 
-from enum import Enum
+from Weapons import Weapon
+from Weapons import enum_bolt_position
+from Weapons import enum_bolt_rotation
 
-import Ammunitions
 
 
-class enum_bolt_position(Enum):
-    # Closed and ready for firing
-    closed = 0
-    # Half-open. Can't be fired nor loaded, but won't eject the cardridge
-    half = 1
-    # Opened and ready for loading
-    open = 2
-
-class enum_bolt_rotation(Enum):
-    up = 0
-    down = 1
-
-class Bolt_Action_Rifle():
+class Bolt_Action_Rifle(Weapon):
 
     name = None
 
-    is_hammer_cocked = False
     
     bolt_position =  [enum_bolt_position.closed, enum_bolt_rotation.down]
 
@@ -199,16 +187,4 @@ class Bolt_Action_Rifle():
                 self.chamber = None
         else:
             print("Can't extract cardridges if the action is closed")
-        
-            
-    def get_actions(self):
-        for i in sorted(self.doables.keys()):
-            print(i)
-    
-    
-    
-    def do(self, var):
-        self.doables.get(var,lambda self : self.get_actions() )(self)
-        
-            
             

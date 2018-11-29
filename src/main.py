@@ -28,10 +28,14 @@ while loop:
 
     var = input(inhand.name+":").lower()
     
+    var_temp = var.split()
+    
+    var, arg = var_temp[0], var_temp[1:]
+    
     if var == "exit":
         loop = False
     else:
-        inhand.do(var)
+        inhand.do(var, arg)
 
 
 

@@ -1,13 +1,11 @@
 
+from Weapons import Weapon
 
-import Ammunitions
 
 
-class Revolver():
 
-	name = None
 
-	is_hammer_cocked = False
+class Revolver(Weapon):
 	
 	is_action_open = False
 	
@@ -121,15 +119,7 @@ class Revolver():
 				print("There is something in this spot")
 		else:
 			print("Can't load cartridges if the cylinder is closed")
-			
-	def get_actions(self):
-		for i in self.doables.keys():
-			print(i)
-	
-	
-	
-	def do(self, var):
-		self.doables.get(var,lambda self : self.get_actions() )(self)
+
 		
 			
 			

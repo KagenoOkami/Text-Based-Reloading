@@ -1,22 +1,13 @@
 
-from enum import Enum
+from Weapons import Weapon
+from Weapons import enum_bolt_position
 
-import Ammunitions
 
 
-class enum_bolt_position(Enum):
-    # Closed and ready for firing: lifts/chambers
-    closed = 0
-    # Half-open. Can't be fired nor loaded, but won't eject the cardridge
-    half = 1
-    # Opened and ready for loading: extracts, ejects, cocks
-    open = 2
-
-class Pump_Action():
+class Pump_Action(Weapon):
 
     name = None
 
-    is_hammer_cocked = False
     
     bolt_position =  enum_bolt_position.closed
 
@@ -162,16 +153,3 @@ class Pump_Action():
                 self.chamber = None
         else:
             print("Can't extract cardridges if the action is closed")
-        
-            
-    def get_actions(self):
-        for i in sorted(self.doables.keys()):
-            print(i)
-    
-    
-    
-    def do(self, var):
-        self.doables.get(var,lambda self : self.get_actions() )(self)
-        
-            
-            

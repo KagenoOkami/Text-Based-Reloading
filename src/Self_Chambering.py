@@ -1,28 +1,11 @@
 
-from enum import Enum
+from Weapons import Weapon
+from Weapons import enum_bolt_position
+from Weapons import enum_action_type
 
-import Ammunitions
 
 
-class enum_bolt_position(Enum):
-    # Closed and ready for firing: lifts/chambers
-    closed = 0
-    # Half-open. Can't be fired nor loaded, but won't eject the cardridge
-    half = 1
-    # Opened and ready for loading: extracts, ejects, cocks
-    open = 2
-    
-class enum_action_type(Enum):
-    # Hammer is cocked on pulling the trigger
-    DAT = 0
-    # Hammer is cocked using the recoil of a fired round
-    DAR = 1
-
-class Self_Chambering_Pistol():
-
-    name = None
-
-    is_hammer_cocked = False
+class Self_Chambering_Pistol(Weapon):
     
     bolt_position =  enum_bolt_position.closed
     
@@ -42,11 +25,10 @@ class Self_Chambering_Pistol():
                 "look" : lambda self : self.action_look(),
                 "actions" : lambda self : self.get_actions(),
                 "load" : lambda self : self.action_load_magazine([1,1,1,1]),
-                "eject" : lambda self : self.action_eject_magazine(),
-                "cock" : lambda self : self.action_cock_hammer()
+                "eject" : lambda self : self.action_eject_magazine()
                 }
 
-    def __init__( self, name = "Default", magazine_size = 5, action_type = enum_action_type.DAT ):
+    def __init__( self, name = "Default", magazine_size = 5, action_type = enum_action_type.DAR ):
         
         self.name = name
         
@@ -55,6 +37,9 @@ class Self_Chambering_Pistol():
         self.magazine_size = magazine_size
         
         self.action_type =  action_type
+        
+        if self.action_type == enum_action_type.DAR:
+            self.doables["cock"] = lambda self : self.action_cock_hammer()
         
         print("Made a self chambering type weapon \"" +self.name+"\"" )
 
@@ -180,16 +165,4 @@ class Self_Chambering_Pistol():
                 self.chamber = None
         else:
             print("Can't extract cardridges if the action is closed")
-        
-            
-    def get_actions(self):
-        for i in sorted(self.doables.keys()):
-            print(i)
-    
-    
-    
-    def do(self, var):
-        self.doables.get(var,lambda self : self.get_actions() )(self)
-        
-            
             

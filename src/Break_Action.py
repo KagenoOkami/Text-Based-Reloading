@@ -1,9 +1,10 @@
 
 
-import Ammunitions
+from Weapons import Weapon
 
 
-class Shotgun():
+
+class Shotgun(Weapon):
 
     name = None
 
@@ -123,15 +124,5 @@ class Shotgun():
                 print("There is something in this spot")
         else:
             print("Can't load cartridges if the action is closed")
-            
-    def get_actions(self):
-        for i in sorted(self.doables.keys()):
-            print(i)
-    
-    
-    
-    def do(self, var):
-        self.doables.get(var,lambda self : self.get_actions() )(self)
-        
             
             
