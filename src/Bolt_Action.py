@@ -3,6 +3,8 @@ from Weapons import Weapon
 from Weapons import enum_bolt_position
 from Weapons import enum_bolt_rotation
 
+from Ammunitions import Cardridge
+
 
 
 class Bolt_Action_Rifle(Weapon):
@@ -21,7 +23,7 @@ class Bolt_Action_Rifle(Weapon):
     doables = { "fire" : lambda self : self.action_fire(),
                 "load round" : lambda self : self.action_load_round(),
                 "load round chamber" : lambda self : self.action_load_chamber(),
-#                "load clip" : lambda self : self.action_load_clip(),
+                "load clip" : lambda self : self.action_load_clip([Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
                 "open bolt" : lambda self : self.action_open_bolt(),
                 "open bolt half" : lambda self : self.action_open_bolt_half(),
                 "close bolt" : lambda self : self.action_close_bolt(),
@@ -47,20 +49,23 @@ class Bolt_Action_Rifle(Weapon):
     def action_fire(self):
         
         print("Firing rifle")
-        if self.is_hammer_cocked == True:
-            self.is_hammer_cocked = False
-            
-            if self.bolt_position == [enum_bolt_position.closed, enum_bolt_rotation.down]:
-                
-                if self.chamber == 1:
-                    print("Firing round")
-                    self.chamber = 0
+        if self.bolt_position == [enum_bolt_position.closed, enum_bolt_rotation.down]:
+            if self.is_hammer_cocked == True:
+                self.is_hammer_cocked = False
+
+                if type(self.chamber) == type(Cardridge()):
+                    if self.chamber.bullet:
+                        print("Firing round")
+                        self.chamber.fire()
+                        
+                    else:
+                        print("The cartridge wasn't armed")
                 else:
-                    print("There was no armed cartridge")
+                    print("There was no cartridge" )
             else:
-                print("The chamber isn't closed")
+                print("The hammer wasn't cocked")
         else:
-            print("The hammer wasn't cocked")
+            print("The bolt isn't closed")
 
     def action_cock_hammer(self):
         
@@ -88,8 +93,11 @@ class Bolt_Action_Rifle(Weapon):
     def action_open_bolt_half(self, toPosition = enum_bolt_position.half):
         
         if self.bolt_position[0] != toPosition:
-            self.bolt_position[0] = enum_bolt_position.half
-            print("Half opened bolt")
+            if self.bolt_position[1] == enum_bolt_rotation.up:
+                self.bolt_position[0] = enum_bolt_position.half
+                print("Half opened bolt")
+            else:
+                print("Can't pull, bolt is down")
         else:
             print("The bolt is already half open")
     
@@ -140,14 +148,12 @@ class Bolt_Action_Rifle(Weapon):
     
     def action_load_round(self):
         
-        # Use Pop() and Push() to the magazine list (HAH, I'm a genius
-        # Just don't allow more pushing than the magazine is large!
         
         if self.bolt_position[0] == enum_bolt_position.open:
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
-                self.magazine.append(1)
+                self.magazine.append(Cardridge())
                 
             else:
                 print("The magazine is full")
@@ -157,7 +163,7 @@ class Bolt_Action_Rifle(Weapon):
     def action_load_chamber(self):
         if self.bolt_position[0] == enum_bolt_position.open:
             if self.chamber == None:
-                self.chamber = 1
+                self.chamber = Cardridge()
                 print("Loading cartridge into magazine")
             else:
                 print("The chamber is full")
@@ -170,7 +176,8 @@ class Bolt_Action_Rifle(Weapon):
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
-                self.magazine.push(clip)
+                while len(self.magazine) < self.magazine_size:
+                    self.magazine.append(clip.pop())
                 
             else:
                 print("The magazine is full")

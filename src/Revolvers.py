@@ -1,6 +1,6 @@
 
 from Weapons import Weapon
-
+from Ammunitions import Cardridge
 
 
 
@@ -25,8 +25,8 @@ class Revolver(Weapon):
 			    "actions" : lambda self : self.get_actions(),
 			    "extract" : lambda self : self.action_extract(),
 			    "load" : lambda self : self.action_load(),
-			    "rotatel" : lambda self : self.action_rotate_cylinder(1),
-			    "rotater" : lambda self : self.action_rotate_cylinder(-1)
+			    "rotatel" : lambda self : self.action_rotate_cylinder(-1),
+			    "rotater" : lambda self : self.action_rotate_cylinder(1)
 				}
 
 	def __init__( self, name = "Default", is_doubleAction = True ):
@@ -47,14 +47,17 @@ class Revolver(Weapon):
 			
 			if self.is_action_open == False:
 				
-				if self.cylinder[self.cylinder_top] == 1:
-					print("Firing round")
-					self.cylinder[self.cylinder_top] = 0
-					if self.is_doubleAction:
-						# If the action is Double Action Trigger, cock the hammer
-						self.action_cock_hammer()
+				if type(self.cylinder[self.cylinder_top]) == type(Cardridge()):
+					if self.cylinder[self.cylinder_top].bullet:
+						print("Firing round")
+						self.cylinder[self.cylinder_top].fire()
+						if self.is_doubleAction:
+							# If the action is Double Action Trigger, cock the hammer
+							self.action_cock_hammer()
+					else:
+						print("The cartridge wasn't armed")
 				else:
-					print("There was no armed cartridge")
+					print("There was no cartridge" )
 			else:
 				print("The hammer struck, but the cylinder was open")
 		else:
@@ -64,7 +67,7 @@ class Revolver(Weapon):
 		if self.is_hammer_cocked == False:
 			print("Cocking hammer")
 			self.is_hammer_cocked = True
-			self.action_rotate_cylinder(1)
+			self.action_rotate_cylinder(-1)
 
 		else:
 			print("Hammer was already cocked")
@@ -113,8 +116,8 @@ class Revolver(Weapon):
 			if self.cylinder[self.cylinder_top] == None:
 				
 				print("Loading cartridge")
-				self.cylinder[self.cylinder_top] = 1
-				self.action_rotate_cylinder(-1)
+				self.cylinder[self.cylinder_top] = Cardridge()
+				self.action_rotate_cylinder(1)
 			else:
 				print("There is something in this spot")
 		else:

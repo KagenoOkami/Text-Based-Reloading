@@ -1,6 +1,7 @@
 
 
 from Weapons import Weapon
+from Ammunitions import Cardridge
 
 
 
@@ -56,14 +57,15 @@ class Shotgun(Weapon):
                 
                 if self.is_action_open == False:
                     
-                    if self.barrels[barrel] == 1:
-                        print("Firing round")
-                        self.barrels[barrel] = 0
-                        if self.is_doubleAction:
-                            # If the action is Double Action Trigger, cock the hammer
-                            self.action_cock_hammer(barrel)
+                    if type(self.barrels[barrel]) == type(Cardridge()):
+                        if self.barrels[barrel].bullet:
+                            print("Firing round")
+                            self.barrels[barrel].fire()
+                                
+                        else:
+                            print("The cartridge wasn't armed")
                     else:
-                        print("There was no armed cartridge")
+                        print("There was no cartridge" )
                 else:
                     print("The hammer struck, but the cylinder was open")
             else:
@@ -119,7 +121,7 @@ class Shotgun(Weapon):
             if self.barrels[barrel] == None:
                 
                 print("Loading cartridge")
-                self.barrels[barrel] = 1
+                self.barrels[barrel] = Cardridge()
             else:
                 print("There is something in this spot")
         else:

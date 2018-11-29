@@ -2,6 +2,8 @@
 from Weapons import Weapon
 from Weapons import enum_bolt_position
 
+from Ammunitions import Cardridge
+
 
 
 class Pump_Action(Weapon):
@@ -43,20 +45,25 @@ class Pump_Action(Weapon):
     def action_fire(self):
         
         print("Firing rifle")
-        if self.is_hammer_cocked == True:
-            self.is_hammer_cocked = False
+        if self.bolt_position == enum_bolt_position.closed:
+            if self.is_hammer_cocked == True:
+                self.is_hammer_cocked = False
             
-            if self.bolt_position == enum_bolt_position.closed:
                 
-                if self.chamber == 1:
-                    print("Firing round")
-                    self.chamber = 0
+
+                if type(self.chamber) == type(Cardridge()):
+                    if self.chamber.bullet:
+                        print("Firing round")
+                        self.chamber.fire()
+                        
+                    else:
+                        print("The cartridge wasn't armed")
                 else:
-                    print("There was no armed cartridge")
+                    print("There was no cartridge" )
             else:
-                print("The chamber isn't closed")
+                print("The hammer wasn't cocked")
         else:
-            print("The hammer wasn't cocked")
+            print("The bolt isn't closed")
 
     def action_cock_hammer(self):
         
@@ -126,7 +133,7 @@ class Pump_Action(Weapon):
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
-                self.magazine.append(1)
+                self.magazine.append(Cardridge())
                 
             else:
                 print("The magazine is full")
@@ -136,7 +143,7 @@ class Pump_Action(Weapon):
     def action_load_chamber(self):
         if self.bolt_position == enum_bolt_position.open:
             if self.chamber == None:
-                self.chamber = 1
+                self.chamber = Cardridge()
                 print("Loading cartridge into magazine")
             else:
                 print("The chamber is full")

@@ -3,6 +3,7 @@ from Weapons import Weapon
 from Weapons import enum_bolt_position
 from Weapons import enum_action_type
 
+from Ammunitions import Cardridge
 
 
 class Self_Chambering_Pistol(Weapon):
@@ -24,7 +25,7 @@ class Self_Chambering_Pistol(Weapon):
                 "close" : lambda self : self.action_close_bolt(),
                 "look" : lambda self : self.action_look(),
                 "actions" : lambda self : self.get_actions(),
-                "load" : lambda self : self.action_load_magazine([1,1,1,1]),
+                "load" : lambda self : self.action_load_magazine([Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
                 "eject" : lambda self : self.action_eject_magazine()
                 }
 
@@ -49,28 +50,39 @@ class Self_Chambering_Pistol(Weapon):
     def action_fire(self):
         
         print("Firing rifle")
-        if self.action_type==enum_action_type.DAT:
-            self.action_cock_hammer()
-        
-        if self.is_hammer_cocked == True:
-            self.is_hammer_cocked = False
             
-            if self.bolt_position == enum_bolt_position.closed:
+        if self.bolt_position == enum_bolt_position.closed:
+            if self.action_type==enum_action_type.DAT:
+                self.action_cock_hammer()
+            
+            if self.is_hammer_cocked == True:
+                self.is_hammer_cocked = False
                 
+                if type(self.chamber) == type(Cardridge()):
+                    if self.chamber.bullet:
+                        print("Firing round")
+                        self.chamber.fire()
+                        self.action_open_bolt()
+                        if len(self.magazine):
+                            self.action_close_bolt()
+                        else:
+                            print("Magazine is empty, locked bolt open")
+                        
+                    else:
+                        print("The cartridge wasn't armed")
+                else:
+                    print("There was no cartridge" )
+                    
+                    
                 if self.chamber == 1:
                     print("Firing round")
-                    self.chamber = 0
-                    self.action_open_bolt()
-                    if len(self.magazine):
-                        self.action_close_bolt()
-                    else:
-                        print("Magazine is empty, locked bolt open")
+                    self.chamber.fire()
                 else:
                     print("There was no armed cartridge")
             else:
-                print("The chamber isn't closed")
+                print("The hammer wasn't cocked")
         else:
-            print("The hammer wasn't cocked")
+            print("The chamber isn't closed")
 
     def action_cock_hammer(self):
         
