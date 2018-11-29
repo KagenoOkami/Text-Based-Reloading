@@ -22,9 +22,9 @@ loop = True
 
 while loop:
 
-    var = input(inhand.name+":").lower()
+    var = input(inhand.name+":").lower().strip()
     
-#    var_temp = var.split()
+    var_temp = var.split()
     
 #    var, arg = var_temp[0], var_temp[1:]
     arg = ""

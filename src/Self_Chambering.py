@@ -24,7 +24,6 @@ class Self_Chambering_Pistol(Weapon):
                 "open" : lambda self : self.action_open_bolt(),
                 "close" : lambda self : self.action_close_bolt(),
                 "look" : lambda self : self.action_look(),
-                "actions" : lambda self : self.get_actions(),
                 "load" : lambda self : self.action_load_magazine([Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
                 "eject" : lambda self : self.action_eject_magazine()
                 }

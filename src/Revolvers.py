@@ -22,7 +22,6 @@ class Revolver(Weapon):
 			    "close" : lambda self : self.action_close_cylinder(),
 			    "look" : lambda self : self.action_lookat_cylinder(),
 			    "cock" : lambda self : self.action_cock_hammer(),
-			    "actions" : lambda self : self.get_actions(),
 			    "extract" : lambda self : self.action_extract(),
 			    "load" : lambda self : self.action_load(),
 			    "rotatel" : lambda self : self.action_rotate_cylinder(-1),
