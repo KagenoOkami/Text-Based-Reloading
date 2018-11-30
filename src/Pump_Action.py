@@ -26,7 +26,6 @@ class Pump_Action(Weapon):
                 "open bolt half" : lambda self : self.action_open_bolt_half(),
                 "close bolt" : lambda self : self.action_close_bolt(),
                 "look" : lambda self : self.action_look(),
-                "actions" : lambda self : self.get_actions(),
                 }
 
     def __init__( self, name = "Default", magazine_size = 5 ):

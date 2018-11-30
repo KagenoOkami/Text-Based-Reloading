@@ -29,8 +29,7 @@ class Shotgun(Weapon):
                 "loadr" : lambda self : self.action_load(1),
                 "open" : lambda self : self.action_open_action(),
                 "close" : lambda self : self.action_close_action(),
-                "look" : lambda self : self.action_lookat_action(),
-                "actions" : lambda self : self.get_actions()
+                "look" : lambda self : self.action_lookat_action()
                 }
 
     def __init__( self, name = "Default", is_doubleAction = False, barrel_count = 1 ):

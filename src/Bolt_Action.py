@@ -28,7 +28,6 @@ class Bolt_Action_Rifle(Weapon):
                 "open bolt half" : lambda self : self.action_open_bolt_half(),
                 "close bolt" : lambda self : self.action_close_bolt(),
                 "look" : lambda self : self.action_look(),
-                "actions" : lambda self : self.get_actions(),
                 "rotate up" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.up),
                 "rotate down" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.down)
                 }
