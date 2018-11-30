@@ -4,7 +4,6 @@ import Bolt_Action
 import Pump_Action
 import Self_Chambering
 
-import pynput
 
 revolver = Revolvers.Revolver( name = "Revolver" )
 shotgun =  Break_Action.Shotgun( name = "Double Barrel Shotgun", barrel_count = 2 )
@@ -19,22 +18,24 @@ inhand = shotgun2
 print("")
 
 
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Key, Listener, KeyCode
 
 def on_press(key):
     #print('{0} pressed'.format(key))
     pass
 
 def on_release(key):
-    print('{0} release'.format(key))
+
+    if False:
+        pass
+    elif key.char in inhand.doables.keys():
+        inhand.do(key.char, "")
     
-    if key == Key.f:
-        inhand.do("fire", "")
-    
-    
-    if key == Key.esc:
+    elif key == Key.esc:
         # Stop listener
         return False
+    else:
+        print(key.char, "pressed")
 
 # Collect events until released
 with Listener(

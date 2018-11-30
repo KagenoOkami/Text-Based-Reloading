@@ -20,13 +20,13 @@ class Pump_Action(Weapon):
     
     chamber = [None]
     
-    doables = { "fire" : lambda self : self.action_fire(),
-                "load round" : lambda self : self.action_load_round(),
-                "load round chamber" : lambda self : self.action_load_chamber(),
-                "open bolt" : lambda self : self.action_open_bolt(),
-                "open bolt half" : lambda self : self.action_open_bolt_half(),
-                "close bolt" : lambda self : self.action_close_bolt(),
-                "look" : lambda self : self.action_look()
+    doables = { "j" : lambda self : self.action_fire(),
+                "k" : lambda self : self.action_load_round(),
+                "i" : lambda self : self.action_load_chamber(),
+                "v" : lambda self : self.action_open_bolt(),
+                "f" : lambda self : self.action_open_bolt_half(),
+                "r" : lambda self : self.action_close_bolt(),
+                "s" : lambda self : self.action_look()
                 }
 
     def __init__( self, name = "Default", magazine_size = 5 ):
