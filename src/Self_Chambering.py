@@ -4,6 +4,7 @@ from Weapons import enum_bolt_position
 from Weapons import enum_action_type
 
 from Ammunitions import Cardridge
+from Ammunitions import Magazine
 
 
 class Self_Chambering_Pistol(Weapon):
@@ -20,12 +21,13 @@ class Self_Chambering_Pistol(Weapon):
     
     chamber = [None]
     
-    doables = { "fire" : lambda self : self.action_fire(),
-                "open" : lambda self : self.action_open_bolt(),
-                "close" : lambda self : self.action_close_bolt(),
-                "look" : lambda self : self.action_look(),
-                "load" : lambda self : self.action_load_magazine([Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
-                "eject" : lambda self : self.action_eject_magazine()
+    doables = { "j" : lambda self : self.action_fire(),
+                "v" : lambda self : self.action_open_bolt(),
+                "f" : lambda self : self.action_open_bolt_half(),
+                "r" : lambda self : self.action_close_bolt(),
+                "s" : lambda self : self.action_look(),
+                "k" : lambda self : self.action_load_magazine( [Cardridge()]*4 ),
+                "," : lambda self : self.action_eject_magazine()
                 }
 
     def __init__( self, name = "Default", magazine_size = 5, action_type = enum_action_type.DAR ):
@@ -67,17 +69,12 @@ class Self_Chambering_Pistol(Weapon):
                         else:
                             print("Magazine is empty, locked bolt open")
                         
+                        
+                        
                     else:
                         print("The cartridge wasn't armed")
                 else:
                     print("There was no cartridge" )
-                    
-                    
-                if self.chamber == 1:
-                    print("Firing round")
-                    self.chamber.fire()
-                else:
-                    print("There was no armed cartridge")
             else:
                 print("The hammer wasn't cocked")
         else:
@@ -176,4 +173,11 @@ class Self_Chambering_Pistol(Weapon):
                 self.chamber = None
         else:
             print("Can't extract cardridges if the action is closed")
+            
+            
+            
+            
+            
+            
+            
             

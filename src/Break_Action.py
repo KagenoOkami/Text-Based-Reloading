@@ -16,20 +16,20 @@ class Shotgun(Weapon):
     # Complex action container object. Just a list.
     barrels = [None, None]
     
-    doables = { "firel" : lambda self : self.action_fire(0),
-                "firer" : lambda self : self.action_fire(1),
-                "fire" : lambda self : self.action_fire('b'),
-                "cockl" : lambda self : self.action_cock_hammer(0),
-                "cockr" : lambda self : self.action_cock_hammer(1),
-                "cock" : lambda self : self.action_cock_hammer('b'),
-                "extractl" : lambda self : self.action_extract(0),
-                "extractr" : lambda self : self.action_extract(1),
-                "extract" : lambda self : self.action_extract('b'),
-                "loadl" : lambda self : self.action_load(0),
-                "loadr" : lambda self : self.action_load(1),
-                "open" : lambda self : self.action_open_action(),
-                "close" : lambda self : self.action_close_action(),
-                "look" : lambda self : self.action_lookat_action()
+    doables = { "," : lambda self : self.action_fire(0),
+                "." : lambda self : self.action_fire(1),
+                "/" : lambda self : self.action_fire('b'),
+#                "h" : lambda self : self.action_cock_hammer(0),
+#                "j" : lambda self : self.action_cock_hammer(1),
+                "k" : lambda self : self.action_cock_hammer('b'),
+                "y" : lambda self : self.action_extract(0),
+                "u" : lambda self : self.action_extract(1),
+#                "i" : lambda self : self.action_extract('b'),
+                "n" : lambda self : self.action_load(0),
+                "m" : lambda self : self.action_load(1),
+                "r" : lambda self : self.action_open_action(),
+                "v" : lambda self : self.action_close_action(),
+                "s" : lambda self : self.action_lookat_action()
                 }
 
     def __init__( self, name = "Default", is_doubleAction = False, barrel_count = 1 ):

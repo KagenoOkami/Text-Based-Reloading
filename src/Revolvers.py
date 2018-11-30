@@ -17,15 +17,15 @@ class Revolver(Weapon):
 	# Which part of the cylinder is on top. Counts clockwise.
 	cylinder_top = 0
 	
-	doables = {	"fire" : lambda self : self.action_fire(),
-			    "open" : lambda self : self.action_open_cylinder(),
-			    "close" : lambda self : self.action_close_cylinder(),
-			    "look" : lambda self : self.action_lookat_cylinder(),
-			    "cock" : lambda self : self.action_cock_hammer(),
-			    "extract" : lambda self : self.action_extract(),
-			    "load" : lambda self : self.action_load(),
-			    "rotatel" : lambda self : self.action_rotate_cylinder(-1),
-			    "rotater" : lambda self : self.action_rotate_cylinder(1)
+	doables = {	"j" : lambda self : self.action_fire(),
+			    "r" : lambda self : self.action_open_cylinder(),
+			    "v" : lambda self : self.action_close_cylinder(),
+			    "s" : lambda self : self.action_lookat_cylinder(),
+			    "u" : lambda self : self.action_cock_hammer(),
+			    "," : lambda self : self.action_extract(),
+			    "k" : lambda self : self.action_load(),
+			    "i" : lambda self : self.action_rotate_cylinder(-1),
+			    "o" : lambda self : self.action_rotate_cylinder(1)
 				}
 
 	def __init__( self, name = "Default", is_doubleAction = True ):

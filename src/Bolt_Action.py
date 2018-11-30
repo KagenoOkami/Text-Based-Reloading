@@ -20,16 +20,16 @@ class Bolt_Action_Rifle(Weapon):
     
     chamber = [None]
     
-    doables = { "fire" : lambda self : self.action_fire(),
-                "load round" : lambda self : self.action_load_round(),
-                "load round chamber" : lambda self : self.action_load_chamber(),
-                "load clip" : lambda self : self.action_load_clip([Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
-                "open bolt" : lambda self : self.action_open_bolt(),
-                "open bolt half" : lambda self : self.action_open_bolt_half(),
-                "close bolt" : lambda self : self.action_close_bolt(),
-                "look" : lambda self : self.action_look(),
-                "rotate up" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.up),
-                "rotate down" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.down)
+    doables = { "j" : lambda self : self.action_fire(),
+                "i" : lambda self : self.action_load_chamber(),
+                "k" : lambda self : self.action_load_round(),
+                "," : lambda self : self.action_load_clip([Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
+                "r" : lambda self : self.action_open_bolt(),
+                "f" : lambda self : self.action_open_bolt_half(),
+                "v" : lambda self : self.action_close_bolt(),
+                "s" : lambda self : self.action_look(),
+                "t" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.up),
+                "y" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.down)
                 }
 
     def __init__( self, name = "Default", magazine_size = 5 ):
