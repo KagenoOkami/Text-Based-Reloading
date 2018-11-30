@@ -2,12 +2,17 @@ from test.support import temp_cwd
 
 
 
+
 class Magazine():
-    def __init(self):
+    magazine = []
+    def __init(self, magazine_size=9):
+        self.magazine = [None]*magazine_size
         pass
     
 class Clip():
-    def __init(self):
+    clip = []
+    def __init(self, clip_size=5):
+        self.clip = [None]*clip_size
         pass
 
 class Cardridge():
