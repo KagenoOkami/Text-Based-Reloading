@@ -12,8 +12,9 @@ shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size 
 pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
 
-inhand = pistol
+inhand = shotgun2
 
+inventory = [None]*10
 
 print("")
 
@@ -28,9 +29,24 @@ def on_release(key):
 
     if False:
         pass
+        
+    
+    elif key.char == '1':
+        # (inventory[0], inhand) = (inhand, inventory[0])
+        inhand = revolver
+    elif key.char == '2':
+        inhand = shotgun
+    elif key.char == '3':
+        inhand = bolt_action_rifle
+    elif key.char == '4':
+        inhand = shotgun2
+    elif key.char == '5':
+        inhand = pistol
+        
+    # Goes last; weapons should never overwrite non-weapon actions
     elif key.char in inhand.doables.keys():
         inhand.do(key.char, "")
-    
+        
     elif key == Key.esc:
         # Stop listener
         return False
