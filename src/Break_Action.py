@@ -16,14 +16,14 @@ class Shotgun(Weapon):
     # Complex action container object. Just a list.
     barrels = [None, None]
     
-    doables = { "," : lambda self : self.action_fire(0),
-                "." : lambda self : self.action_fire(1),
-                "/" : lambda self : self.action_fire('b'),
+    doables = { #"," : lambda self : self.action_fire(0),
+                #"." : lambda self : self.action_fire(1),
+                "j" : lambda self : self.action_fire('b'),
 #                "h" : lambda self : self.action_cock_hammer(0),
 #                "j" : lambda self : self.action_cock_hammer(1),
                 "k" : lambda self : self.action_cock_hammer('b'),
-                "y" : lambda self : self.action_extract(0),
-                "u" : lambda self : self.action_extract(1),
+                "u" : lambda self : self.action_extract(0),
+                "i" : lambda self : self.action_extract(1),
 #                "i" : lambda self : self.action_extract('b'),
                 "n" : lambda self : self.action_load(0),
                 "m" : lambda self : self.action_load(1),
@@ -49,7 +49,7 @@ class Shotgun(Weapon):
         if barrel == 'b':
             self.action_fire(0)
             self.action_fire(1)
-        else:
+        elif barrel == 1 or barrel == 0:
             print("Firing", self.name,"barrel", barrel+1)
             if self.is_hammer_cocked[barrel] == True:
                 self.is_hammer_cocked[barrel] = False
@@ -60,6 +60,10 @@ class Shotgun(Weapon):
                         if self.barrels[barrel].bullet:
                             print("Firing round")
                             self.barrels[barrel].fire()
+        else:
+            #Fire a barrel that isn't cocked
+            print("Break_action normalised fire function not implimented!")
+            pass
                                 
                         else:
                             print("The cartridge wasn't armed")
@@ -116,6 +120,7 @@ class Shotgun(Weapon):
     
     def action_load(self, barrel):
         
+        #Replace with a normalised function that just loads all the barrels with None in them.
         if self.is_action_open == True:
             if self.barrels[barrel] == None:
                 

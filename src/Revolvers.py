@@ -111,6 +111,8 @@ class Revolver(Weapon):
 	
 	def action_load(self):
 		
+		#Replace with more universal code for loading the empty spots without user input
+		#It barely has user input anyway, but trying to load a specific spot is impossible in the current action_look() system
 		if self.is_action_open == True:
 			if self.cylinder[self.cylinder_top] == None:
 				
