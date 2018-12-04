@@ -47,7 +47,7 @@ class Revolver(Weapon):
 			if self.is_action_open == False:
 				
 				if type(self.cylinder[self.cylinder_top]) == type(Cardridge()):
-					if self.cylinder[self.cylinder_top].bullet:
+					if self.cylinder[self.cylinder_top].primer:
 						print("Firing round")
 						self.cylinder[self.cylinder_top].fire()
 						if self.is_doubleAction:
@@ -113,6 +113,18 @@ class Revolver(Weapon):
 		
 		#Replace with more universal code for loading the empty spots without user input
 		#It barely has user input anyway, but trying to load a specific spot is impossible in the current action_look() system
+		
+		if self.is_action_open == True:
+			if None in self.cylinder:
+				print("Loading cartridge in an empty spot")
+				self.cylinder[self.cylinder.index(None)] = Cardridge()
+			else:
+				print("The cylinder is full")
+		else:
+			print("Can't load cartridges if the cylinder is closed")
+			
+			
+		'''
 		if self.is_action_open == True:
 			if self.cylinder[self.cylinder_top] == None:
 				
@@ -123,7 +135,7 @@ class Revolver(Weapon):
 				print("There is something in this spot")
 		else:
 			print("Can't load cartridges if the cylinder is closed")
-
+		'''
 		
 			
 			

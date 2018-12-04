@@ -45,8 +45,6 @@ class Weapon():
         for i in self.doables.keys():
             print(i)
     
-    
-    
     def do(self, var, arg):
         self.doables.get(var,lambda self : self.get_actions(arg) )(self)
         

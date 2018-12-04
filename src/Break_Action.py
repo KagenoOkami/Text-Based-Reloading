@@ -60,10 +60,6 @@ class Shotgun(Weapon):
                         if self.barrels[barrel].bullet:
                             print("Firing round")
                             self.barrels[barrel].fire()
-        else:
-            #Fire a barrel that isn't cocked
-            print("Break_action normalised fire function not implimented!")
-            pass
                                 
                         else:
                             print("The cartridge wasn't armed")
@@ -73,6 +69,12 @@ class Shotgun(Weapon):
                     print("The hammer struck, but the cylinder was open")
             else:
                 print("The hammer wasn't cocked")
+        
+        #DUMMY Code. need to replace withreal code
+        else:
+            #Fire a barrel that isn't cocked
+            print("Break_action normalised fire function not implimented!")
+            pass
 
     def action_cock_hammer(self, barrel = 'b'):
         

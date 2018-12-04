@@ -26,7 +26,16 @@ def on_press(key):
     pass
 
 def on_release(key):
-
+    global inhand
+    
+    global revolver
+    global shotgun
+    global bolt_action_rifle
+    global shotgun2
+    global pistol
+    
+    
+    
     if False:
         pass
         
@@ -34,14 +43,19 @@ def on_release(key):
     elif key.char == '1':
         # (inventory[0], inhand) = (inhand, inventory[0])
         inhand = revolver
+        print("Picked revolver")
     elif key.char == '2':
         inhand = shotgun
+        print("Picked shotgun")
     elif key.char == '3':
         inhand = bolt_action_rifle
+        print("Picked bolt_action_rifle")
     elif key.char == '4':
         inhand = shotgun2
+        print("Picked shotgun2")
     elif key.char == '5':
         inhand = pistol
+        print("Picked pistol")
         
     # Goes last; weapons should never overwrite non-weapon actions
     elif key.char in inhand.doables.keys():
@@ -51,7 +65,7 @@ def on_release(key):
         # Stop listener
         return False
     else:
-        print(key.char, "pressed")
+        print(key.char, "pressed - not an action")
 
 # Collect events until released
 with Listener(
