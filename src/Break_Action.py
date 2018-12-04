@@ -18,13 +18,14 @@ class Shotgun(Weapon):
     
     doables = { #"," : lambda self : self.action_fire(0),
                 #"." : lambda self : self.action_fire(1),
-                "j" : lambda self : self.action_fire('b'),
-#                "h" : lambda self : self.action_cock_hammer(0),
-#                "j" : lambda self : self.action_cock_hammer(1),
+                "j" : lambda self : self.action_fire(),
+                "h" : lambda self : self.action_fire('b'),
+                #"h" : lambda self : self.action_cock_hammer(0),
+                #"j" : lambda self : self.action_cock_hammer(1),
                 "k" : lambda self : self.action_cock_hammer('b'),
                 "u" : lambda self : self.action_extract(0),
                 "i" : lambda self : self.action_extract(1),
-#                "i" : lambda self : self.action_extract('b'),
+                #"i" : lambda self : self.action_extract('b'),
                 "n" : lambda self : self.action_load(0),
                 "m" : lambda self : self.action_load(1),
                 "r" : lambda self : self.action_open_action(),
@@ -44,7 +45,7 @@ class Shotgun(Weapon):
     def __repr__(self):
         return "Captured rerp function, but didn't implement it yet"
 
-    def action_fire(self, barrel = 'b'):
+    def action_fire(self, barrel = 'n'):
         
         if barrel == 'b':
             self.action_fire(0)
@@ -69,12 +70,16 @@ class Shotgun(Weapon):
                     print("The hammer struck, but the cylinder was open")
             else:
                 print("The hammer wasn't cocked")
+                
         
-        #DUMMY Code. need to replace withreal code
         else:
             #Fire a barrel that isn't cocked
-            print("Break_action normalised fire function not implimented!")
-            pass
+            if self.is_hammer_cocked[0] == True:
+                self.action_fire(0)
+                return
+            elif self.is_hammer_cocked[1] == True:
+                self.action_fire(1)
+                return
 
     def action_cock_hammer(self, barrel = 'b'):
         
@@ -116,6 +121,7 @@ class Shotgun(Weapon):
                 self.action_extract(0)
                 self.action_extract(1)
             else:
+                print("ejecting cardridge from barrel", barrel+1)
                 self.barrels[barrel] = None
         else:
             print("Can't extract cardridges if the action is closed")
@@ -132,5 +138,13 @@ class Shotgun(Weapon):
                 print("There is something in this spot")
         else:
             print("Can't load cartridges if the action is closed")
+            
+            '''
+            if None in self.barrels:
+                print("Loading cartridge in an empty spot")
+                self.barrels[self.barrels.index(None)] = Cardridge()
+            else:
+                print("The barrel is full")
+            '''
             
             
