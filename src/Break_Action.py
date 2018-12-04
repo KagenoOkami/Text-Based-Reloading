@@ -16,20 +16,21 @@ class Shotgun(Weapon):
     # Complex action container object. Just a list.
     barrels = [None, None]
     
-    doables = { "firel" : lambda self : self.action_fire(0),
-                "firer" : lambda self : self.action_fire(1),
-                "fire" : lambda self : self.action_fire('b'),
-                "cockl" : lambda self : self.action_cock_hammer(0),
-                "cockr" : lambda self : self.action_cock_hammer(1),
-                "cock" : lambda self : self.action_cock_hammer('b'),
-                "extractl" : lambda self : self.action_extract(0),
-                "extractr" : lambda self : self.action_extract(1),
-                "extract" : lambda self : self.action_extract('b'),
-                "loadl" : lambda self : self.action_load(0),
-                "loadr" : lambda self : self.action_load(1),
-                "open" : lambda self : self.action_open_action(),
-                "close" : lambda self : self.action_close_action(),
-                "look" : lambda self : self.action_lookat_action()
+    doables = { #"," : lambda self : self.action_fire(0),
+                #"." : lambda self : self.action_fire(1),
+                "j" : lambda self : self.action_fire(),
+                #"h" : lambda self : self.action_fire('b'),            Fun idea, but maybe not practical
+                #"h" : lambda self : self.action_cock_hammer(0),
+                #"j" : lambda self : self.action_cock_hammer(1),
+                "k" : lambda self : self.action_cock_hammer('b'),
+                "u" : lambda self : self.action_extract(0),
+                "i" : lambda self : self.action_extract(1),
+                "y" : lambda self : self.action_extract('b'),
+                "n" : lambda self : self.action_load(0),
+                "m" : lambda self : self.action_load(1),
+                "r" : lambda self : self.action_open_action(),
+                "v" : lambda self : self.action_close_action(),
+                "s" : lambda self : self.action_lookat_action()
                 }
 
     def __init__( self, name = "Default", is_doubleAction = False, barrel_count = 1 ):
@@ -44,12 +45,12 @@ class Shotgun(Weapon):
     def __repr__(self):
         return "Captured rerp function, but didn't implement it yet"
 
-    def action_fire(self, barrel = 'b'):
+    def action_fire(self, barrel = 'n'):
         
         if barrel == 'b':
             self.action_fire(0)
             self.action_fire(1)
-        else:
+        elif barrel == 1 or barrel == 0:
             print("Firing", self.name,"barrel", barrel+1)
             if self.is_hammer_cocked[barrel] == True:
                 self.is_hammer_cocked[barrel] = False
@@ -69,6 +70,16 @@ class Shotgun(Weapon):
                     print("The hammer struck, but the cylinder was open")
             else:
                 print("The hammer wasn't cocked")
+                
+        
+        else:
+            #Fire a barrel that isn't cocked
+            if self.is_hammer_cocked[0] == True:
+                self.action_fire(0)
+                return
+            elif self.is_hammer_cocked[1] == True:
+                self.action_fire(1)
+                return
 
     def action_cock_hammer(self, barrel = 'b'):
         
@@ -92,6 +103,7 @@ class Shotgun(Weapon):
     def action_close_action(self):
         if self.is_action_open == True:
             self.is_action_open = False
+            self.action_cock_hammer('b')
             print("Closed action")
         else:
             print("Action was already closed")
@@ -110,12 +122,14 @@ class Shotgun(Weapon):
                 self.action_extract(0)
                 self.action_extract(1)
             else:
+                print("ejecting cardridge from barrel", barrel+1)
                 self.barrels[barrel] = None
         else:
             print("Can't extract cardridges if the action is closed")
     
     def action_load(self, barrel):
         
+        #Replace with a normalised function that just loads all the barrels with None in them.
         if self.is_action_open == True:
             if self.barrels[barrel] == None:
                 
@@ -125,5 +139,13 @@ class Shotgun(Weapon):
                 print("There is something in this spot")
         else:
             print("Can't load cartridges if the action is closed")
+            
+            '''
+            if None in self.barrels:
+                print("Loading cartridge in an empty spot")
+                self.barrels[self.barrels.index(None)] = Cardridge()
+            else:
+                print("The barrel is full")
+            '''
             
             

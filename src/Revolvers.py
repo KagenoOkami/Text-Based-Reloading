@@ -17,15 +17,15 @@ class Revolver(Weapon):
 	# Which part of the cylinder is on top. Counts clockwise.
 	cylinder_top = 0
 	
-	doables = {	"fire" : lambda self : self.action_fire(),
-			    "open" : lambda self : self.action_open_cylinder(),
-			    "close" : lambda self : self.action_close_cylinder(),
-			    "look" : lambda self : self.action_lookat_cylinder(),
-			    "cock" : lambda self : self.action_cock_hammer(),
-			    "extract" : lambda self : self.action_extract(),
-			    "load" : lambda self : self.action_load(),
-			    "rotatel" : lambda self : self.action_rotate_cylinder(-1),
-			    "rotater" : lambda self : self.action_rotate_cylinder(1)
+	doables = {	"j" : lambda self : self.action_fire(),
+			    "r" : lambda self : self.action_open_cylinder(),
+			    "v" : lambda self : self.action_close_cylinder(),
+			    "s" : lambda self : self.action_lookat_cylinder(),
+			    "u" : lambda self : self.action_cock_hammer(),
+			    "," : lambda self : self.action_extract(),
+			    "k" : lambda self : self.action_load(),
+			    "i" : lambda self : self.action_rotate_cylinder(-1),
+			    "o" : lambda self : self.action_rotate_cylinder(1)
 				}
 
 	def __init__( self, name = "Default", is_doubleAction = True ):
@@ -47,7 +47,7 @@ class Revolver(Weapon):
 			if self.is_action_open == False:
 				
 				if type(self.cylinder[self.cylinder_top]) == type(Cardridge()):
-					if self.cylinder[self.cylinder_top].bullet:
+					if self.cylinder[self.cylinder_top].primer:
 						print("Firing round")
 						self.cylinder[self.cylinder_top].fire()
 						if self.is_doubleAction:
@@ -111,6 +111,20 @@ class Revolver(Weapon):
 	
 	def action_load(self):
 		
+		#Replace with more universal code for loading the empty spots without user input
+		#It barely has user input anyway, but trying to load a specific spot is impossible in the current action_look() system
+		
+		if self.is_action_open == True:
+			if None in self.cylinder:
+				print("Loading cartridge in an empty spot")
+				self.cylinder[self.cylinder.index(None)] = Cardridge()
+			else:
+				print("The cylinder is full")
+		else:
+			print("Can't load cartridges if the cylinder is closed")
+			
+			
+		'''
 		if self.is_action_open == True:
 			if self.cylinder[self.cylinder_top] == None:
 				
@@ -121,7 +135,7 @@ class Revolver(Weapon):
 				print("There is something in this spot")
 		else:
 			print("Can't load cartridges if the cylinder is closed")
-
+		'''
 		
 			
 			

@@ -4,6 +4,7 @@ from Weapons import enum_bolt_position
 from Weapons import enum_action_type
 
 from Ammunitions import Cardridge
+from Ammunitions import Magazine
 
 
 class Self_Chambering_Pistol(Weapon):
@@ -20,12 +21,13 @@ class Self_Chambering_Pistol(Weapon):
     
     chamber = [None]
     
-    doables = { "fire" : lambda self : self.action_fire(),
-                "open" : lambda self : self.action_open_bolt(),
-                "close" : lambda self : self.action_close_bolt(),
-                "look" : lambda self : self.action_look(),
-                "load" : lambda self : self.action_load_magazine([Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
-                "eject" : lambda self : self.action_eject_magazine()
+    doables = { "j" : lambda self : self.action_fire(),
+                "v" : lambda self : self.action_move_bolt(enum_bolt_position.open),
+                "f" : lambda self : self.action_move_bolt(enum_bolt_position.half),
+                "r" : lambda self : self.action_move_bolt(enum_bolt_position.closed),
+                "s" : lambda self : self.action_look(),
+                "k" : lambda self : self.action_load_magazine( [Cardridge()]*4 ),
+                "," : lambda self : self.action_eject_magazine()
                 }
 
     def __init__( self, name = "Default", magazine_size = 5, action_type = enum_action_type.DAR ):
@@ -61,23 +63,19 @@ class Self_Chambering_Pistol(Weapon):
                     if self.chamber.bullet:
                         print("Firing round")
                         self.chamber.fire()
-                        self.action_open_bolt()
+                        
                         if len(self.magazine):
-                            self.action_close_bolt()
+                            self.action_move_bolt(enum_bolt_position.open)
                         else:
+                            self.action_move_bolt(enum_bolt_position.locked)
                             print("Magazine is empty, locked bolt open")
+                        
+                        
                         
                     else:
                         print("The cartridge wasn't armed")
                 else:
                     print("There was no cartridge" )
-                    
-                    
-                if self.chamber == 1:
-                    print("Firing round")
-                    self.chamber.fire()
-                else:
-                    print("There was no armed cartridge")
             else:
                 print("The hammer wasn't cocked")
         else:
@@ -90,37 +88,60 @@ class Self_Chambering_Pistol(Weapon):
             self.is_hammer_cocked = True
         else:
             print("Hammer was already cocked")
-            
-    def action_open_bolt(self, toPosition = enum_bolt_position.open, stay_open = False):
+    
+    def action_move_bolt(self, toPosition):
         
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.open
-            print("Opened bolt")
-            
-            if self.action_type == enum_action_type.DAR:
-                self.action_cock_hammer()
-            
-            # When the bolt is drawn fully, anything in the chamber is ejected regardless
-            self.action_eject_chamber()
-        else:
-            print("The bolt is already open")
-    
-    
-    def action_open_bolt_half(self, toPosition = enum_bolt_position.half):
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.closed:
+            if self.bolt_position != toPosition:
+                if self.bolt_position != enum_bolt_position.half:
+                    self.chamber_from_magazine()
+                    
+                self.bolt_position = enum_bolt_position.closed
+                print("Closed bolt")
+            else:
+                print("Bolt is already closed")
         
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.half
-            print("Half opened bolt")
-        else:
-            print("The bolt is already half open")
-    
-    def action_close_bolt(self, toPosition = enum_bolt_position.closed):
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.closed
-            self.chamber_from_magazine()
-            print("Closed bolt")
-        else:
-            print("The bolt is already closed")
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.half:
+            if self.bolt_position != toPosition:
+                self.bolt_position = enum_bolt_position.half
+                print("Bolt opened partially")
+            else:
+                print("Bolt is already partially open")
+                
+        #------------------------------------------------------------------
+        # Special case
+        # Doesn't lock open and returns to closed immidiatly.
+        # Effectivly racks the slide
+        if toPosition == enum_bolt_position.open:
+            if self.bolt_position != toPosition:
+                self.bolt_position = enum_bolt_position.open
+                print("Bolt opened")
+                
+                if self.action_type == enum_action_type.DAR:
+                    self.action_cock_hammer()
+                    
+                # When the bolt is drawn fully, anything in the chamber is ejected regardless
+                self.action_eject_chamber()
+                
+                self.action_move_bolt(enum_bolt_position.closed)
+            else:
+                print("Bolt is already open")
+                
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.locked:
+            if self.bolt_position != toPosition:
+                self.bolt_position = enum_bolt_position.locked
+                print("Bolt opened")
+                
+                if self.action_type == enum_action_type.DAR:
+                    self.action_cock_hammer()
+                    
+                # When the bolt is drawn fully, anything in the chamber is ejected regardless
+                self.action_eject_chamber()
+            else:
+                print("Odd state; bolt can't be locked if it was already locked!")
             
     
     def action_look(self):
@@ -169,11 +190,18 @@ class Self_Chambering_Pistol(Weapon):
     def action_eject_chamber(self):
         
         # This check shouldn't be nessasery, but safety first
-        if self.bolt_position == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open or self.bolt_position == enum_bolt_position.locked:
             
             if self.chamber != None:
                 print("ejecting cardridge")
                 self.chamber = None
         else:
             print("Can't extract cardridges if the action is closed")
+            
+            
+            
+            
+            
+            
+            
             

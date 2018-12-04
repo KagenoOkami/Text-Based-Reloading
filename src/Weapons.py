@@ -21,10 +21,11 @@ class enum_bolt_position(Enum):
     half = auto()
     # Opened and ready for loading
     open = auto()
+    # Unique to the Bolt_Action for now- means the bolt can't be moved
+    locked = auto()
 
 class enum_bolt_rotation(Enum):
     up = auto()
-    down = auto()
 
 class Weapon():
     
@@ -35,6 +36,8 @@ class Weapon():
     
     is_hammer_cocked = False
     
+    bolt_position = enum_bolt_position.closed
+    
     def __repr__(self):
         return "Captured rerp function, but didn't implement it yet"
     
@@ -44,8 +47,6 @@ class Weapon():
         print("arg=", arg)
         for i in self.doables.keys():
             print(i)
-    
-    
     
     def do(self, var, arg):
         self.doables.get(var,lambda self : self.get_actions(arg) )(self)
