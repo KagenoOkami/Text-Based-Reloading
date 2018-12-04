@@ -19,13 +19,13 @@ class Shotgun(Weapon):
     doables = { #"," : lambda self : self.action_fire(0),
                 #"." : lambda self : self.action_fire(1),
                 "j" : lambda self : self.action_fire(),
-                "h" : lambda self : self.action_fire('b'),
+                #"h" : lambda self : self.action_fire('b'),            Fun idea, but maybe not practical
                 #"h" : lambda self : self.action_cock_hammer(0),
                 #"j" : lambda self : self.action_cock_hammer(1),
                 "k" : lambda self : self.action_cock_hammer('b'),
                 "u" : lambda self : self.action_extract(0),
                 "i" : lambda self : self.action_extract(1),
-                #"i" : lambda self : self.action_extract('b'),
+                "y" : lambda self : self.action_extract('b'),
                 "n" : lambda self : self.action_load(0),
                 "m" : lambda self : self.action_load(1),
                 "r" : lambda self : self.action_open_action(),
@@ -103,6 +103,7 @@ class Shotgun(Weapon):
     def action_close_action(self):
         if self.is_action_open == True:
             self.is_action_open = False
+            self.action_cock_hammer('b')
             print("Closed action")
         else:
             print("Action was already closed")
