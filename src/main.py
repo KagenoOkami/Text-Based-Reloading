@@ -36,10 +36,14 @@ def on_release(key):
     
     
     
-    if False:
-        pass
+    #
         
+    if key == Key.esc:
+        # Stop listener
+        return False
     
+    elif 'char' not in key.__dict__:
+        return
     elif key.char == '1':
         # (inventory[0], inhand) = (inhand, inventory[0])
         inhand = revolver
@@ -61,9 +65,6 @@ def on_release(key):
     elif key.char in inhand.doables.keys():
         inhand.do(key.char, "")
         
-    elif key == Key.esc:
-        # Stop listener
-        return False
     else:
         print(key.char, "pressed - not an action")
 
