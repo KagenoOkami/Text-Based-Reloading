@@ -12,7 +12,6 @@ class Bolt_Action_Rifle(Weapon):
     name = None
 
     
-    bolt_position =  [enum_bolt_position.closed, enum_bolt_rotation.down]
 
     # Complex action container object. Just a list.
     magazine = []
@@ -20,16 +19,18 @@ class Bolt_Action_Rifle(Weapon):
     
     chamber = [None]
     
+    bolt_position = enum_bolt_position.locked
+    
     doables = { "j" : lambda self : self.action_fire(),
                 "i" : lambda self : self.action_load_chamber(),
                 "k" : lambda self : self.action_load_round(),
                 "," : lambda self : self.action_load_clip([Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
-                "r" : lambda self : self.action_open_bolt(),
+                "v" : lambda self : self.action_open_bolt(),
                 "f" : lambda self : self.action_open_bolt_half(),
-                "v" : lambda self : self.action_close_bolt(),
+                "r" : lambda self : self.action_close_bolt(),
                 "s" : lambda self : self.action_look(),
-                "t" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.up),
-                "y" : lambda self : self.action_rotate_bolt(enum_bolt_rotation.down)
+                "e" : lambda self : self.action_rotate_bolt(enum_bolt_position.closed),
+                "t" : lambda self : self.action_rotate_bolt(enum_bolt_position.locked)
                 }
 
     def __init__( self, name = "Default", magazine_size = 5 ):
@@ -48,7 +49,7 @@ class Bolt_Action_Rifle(Weapon):
     def action_fire(self):
         
         print("Firing rifle")
-        if self.bolt_position == [enum_bolt_position.closed, enum_bolt_rotation.down]:
+        if self.bolt_position == enum_bolt_position.locked:
             if self.is_hammer_cocked == True:
                 self.is_hammer_cocked = False
 
@@ -76,9 +77,9 @@ class Bolt_Action_Rifle(Weapon):
             
     def action_open_bolt(self, toPosition = enum_bolt_position.open):
         
-        if self.bolt_position[0] != toPosition:
-            if self.bolt_position[1] == enum_bolt_rotation.up:
-                self.bolt_position[0] = enum_bolt_position.open
+        if self.bolt_position != toPosition:
+            if self.bolt_position != enum_bolt_position.locked:
+                self.bolt_position= enum_bolt_position.open
                 print("Opened bolt")
                 
                 # When the bolt is returned fully, anything in the chamber is ejected regardless
@@ -91,9 +92,9 @@ class Bolt_Action_Rifle(Weapon):
     
     def action_open_bolt_half(self, toPosition = enum_bolt_position.half):
         
-        if self.bolt_position[0] != toPosition:
-            if self.bolt_position[1] == enum_bolt_rotation.up:
-                self.bolt_position[0] = enum_bolt_position.half
+        if self.bolt_position != toPosition:
+            if self.bolt_position != enum_bolt_position.locked:
+                self.bolt_position = enum_bolt_position.half
                 print("Half opened bolt")
             else:
                 print("Can't pull, bolt is down")
@@ -101,12 +102,28 @@ class Bolt_Action_Rifle(Weapon):
             print("The bolt is already half open")
     
     def action_close_bolt(self, toPosition = enum_bolt_position.closed):
-        if self.bolt_position[0] != toPosition:
-            self.bolt_position[0] = enum_bolt_position.closed
+        if self.bolt_position != toPosition:
+            self.bolt_position = enum_bolt_position.closed
             self.chamber_from_magazine()
             print("Closed bolt")
         else:
             print("The bolt is already closed")
+    
+    def action_rotate_bolt(self, direction ):
+        if self.bolt_position == enum_bolt_position.closed or self.bolt_position == enum_bolt_position.locked:
+            if direction == enum_bolt_position.closed:
+                if self.bolt_position == enum_bolt_position.locked:
+                    self.bolt_position = enum_bolt_position.closed
+                    print("Rotate bolt up")
+                    self.action_cock_hammer()
+            elif direction == enum_bolt_position.locked:
+                if self.bolt_position == enum_bolt_position.closed:
+                    self.bolt_position = enum_bolt_position.locked
+                    print("Rotate bolt down")
+            else:
+                print("Bolt already in that position")
+        else:
+            print("Bolt can only be rotated in close position")
     
     def action_look(self):
         if self.bolt_position[0] != enum_bolt_position.closed:
@@ -118,20 +135,6 @@ class Bolt_Action_Rifle(Weapon):
                 print("Magazine is empty")
         else:
             print("The action is closed. Not much to look at.")
-    
-    def action_rotate_bolt(self, direction ):
-        if self.bolt_position[0] == enum_bolt_position.closed:
-            if direction == enum_bolt_rotation.up:
-                if self.bolt_position[1] == enum_bolt_rotation.down:
-                    self.bolt_position[1] = enum_bolt_rotation.up
-                    print("Rotate bolt up")
-                    self.action_cock_hammer()
-            elif direction == enum_bolt_rotation.down:
-                if self.bolt_position[1] == enum_bolt_rotation.up:
-                    self.bolt_position[1] = enum_bolt_rotation.down
-                    print("Rotate bolt down")
-        else:
-            print("Bolt can only be rotated in clsoed position")
             
             
             
@@ -148,7 +151,7 @@ class Bolt_Action_Rifle(Weapon):
     def action_load_round(self):
         
         
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
@@ -160,7 +163,7 @@ class Bolt_Action_Rifle(Weapon):
             print("Can't load cartridges if the action is closed.")
             
     def action_load_chamber(self):
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             if self.chamber == None:
                 self.chamber = Cardridge()
                 print("Loading cartridge into magazine")
@@ -186,7 +189,7 @@ class Bolt_Action_Rifle(Weapon):
     def action_eject_chamber(self):
         
         # This check shouldn't be nessasery, but safety first
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             
             if self.chamber != None:
                 print("ejecting cardridge")
