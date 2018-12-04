@@ -25,12 +25,11 @@ class Bolt_Action_Rifle(Weapon):
                 "i" : lambda self : self.action_load_chamber(),
                 "k" : lambda self : self.action_load_round(),
                 "," : lambda self : self.action_load_clip([Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
-                "v" : lambda self : self.action_open_bolt(),
-                "f" : lambda self : self.action_open_bolt_half(),
-                "r" : lambda self : self.action_close_bolt(),
-                "s" : lambda self : self.action_look(),
-                "e" : lambda self : self.action_rotate_bolt(enum_bolt_position.closed),
-                "t" : lambda self : self.action_rotate_bolt(enum_bolt_position.locked)
+                "v" : lambda self : self.action_move_bolt(enum_bolt_position.open),
+                "f" : lambda self : self.action_move_bolt(enum_bolt_position.half),
+                "r" : lambda self : self.action_move_bolt(enum_bolt_position.closed),
+                "t" : lambda self : self.action_move_bolt(enum_bolt_position.locked),
+                "s" : lambda self : self.action_look()
                 }
 
     def __init__( self, name = "Default", magazine_size = 5 ):
@@ -48,7 +47,6 @@ class Bolt_Action_Rifle(Weapon):
 
     def action_fire(self):
         
-        print("Firing rifle")
         if self.bolt_position == enum_bolt_position.locked:
             if self.is_hammer_cocked == True:
                 self.is_hammer_cocked = False
@@ -59,71 +57,73 @@ class Bolt_Action_Rifle(Weapon):
                         self.chamber.fire()
                         
                     else:
-                        print("The cartridge wasn't armed")
+                        print("Cartridge wasn't armed")
                 else:
                     print("There was no cartridge" )
             else:
-                print("The hammer wasn't cocked")
+                print("Hammer wasn't cocked")
         else:
-            print("The bolt isn't closed")
+            print("Bolt isn't locked")
 
     def action_cock_hammer(self):
         
         if self.is_hammer_cocked == False:
-            print("Cocking hammer")
+            print("Hammer cocked")
             self.is_hammer_cocked = True
         else:
             print("Hammer was already cocked")
             
-    def action_open_bolt(self, toPosition = enum_bolt_position.open):
+    def action_move_bolt(self, toPosition):
         
-        if self.bolt_position != toPosition:
-            if self.bolt_position != enum_bolt_position.locked:
-                self.bolt_position= enum_bolt_position.open
-                print("Opened bolt")
-                
-                # When the bolt is returned fully, anything in the chamber is ejected regardless
-                self.action_eject_chamber()
-            else:
-                print("Can't pull, bolt is down")
-        else:
-            print("The bolt is already open")
-    
-    
-    def action_open_bolt_half(self, toPosition = enum_bolt_position.half):
-        
-        if self.bolt_position != toPosition:
-            if self.bolt_position != enum_bolt_position.locked:
-                self.bolt_position = enum_bolt_position.half
-                print("Half opened bolt")
-            else:
-                print("Can't pull, bolt is down")
-        else:
-            print("The bolt is already half open")
-    
-    def action_close_bolt(self, toPosition = enum_bolt_position.closed):
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.closed
-            self.chamber_from_magazine()
-            print("Closed bolt")
-        else:
-            print("The bolt is already closed")
-    
-    def action_rotate_bolt(self, direction ):
-        if self.bolt_position == enum_bolt_position.closed or self.bolt_position == enum_bolt_position.locked:
-            if direction == enum_bolt_position.closed:
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.closed:
+            if self.bolt_position != toPosition:
                 if self.bolt_position == enum_bolt_position.locked:
                     self.bolt_position = enum_bolt_position.closed
-                    print("Rotate bolt up")
                     self.action_cock_hammer()
-            elif direction == enum_bolt_position.locked:
+                    print("Bolt unlocked")
+                elif self.bolt_position != enum_bolt_position.locked:
+                    self.bolt_position = enum_bolt_position.closed
+                    self.chamber_from_magazine()
+                    print("Bolt closed")
+            else:
+                print("Bolt is already closed")
+        
+        #------------------------------------------------------------------
+        elif toPosition == enum_bolt_position.half:
+            if self.bolt_position != toPosition:
+                if self.bolt_position != enum_bolt_position.locked:
+                    self.bolt_position = enum_bolt_position.half
+                    print("Bolt partially opened")
+                else:
+                    print("Bolt is locked")
+            else:
+                print("Bolt is already partially open")
+        
+        #------------------------------------------------------------------
+        elif toPosition == enum_bolt_position.open:
+            if self.bolt_position != toPosition:
+                if self.bolt_position != enum_bolt_position.locked:
+                    self.bolt_position= enum_bolt_position.open
+                    print("Bolt opened")
+                    
+                    # When the bolt is returned fully, anything in the chamber is ejected regardless
+                    self.action_eject_chamber()
+                else:
+                    print("Bolt is locked")
+            else:
+                print("Bolt is already open")
+                
+        #------------------------------------------------------------------        
+        elif toPosition == enum_bolt_position.locked:
+            if self.bolt_position != toPosition:
                 if self.bolt_position == enum_bolt_position.closed:
                     self.bolt_position = enum_bolt_position.locked
-                    print("Rotate bolt down")
+                    print("Bolt locked")
+                else:
+                    print("Bolt isn't closed")
             else:
-                print("Bolt already in that position")
-        else:
-            print("Bolt can only be rotated in close position")
+                print("Bolt is already locked")
     
     def action_look(self):
         if self.bolt_position[0] != enum_bolt_position.closed:

@@ -12,7 +12,7 @@ shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size 
 pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
 
-inhand = shotgun2
+inhand = bolt_action_rifle
 
 inventory = [None]*10
 
