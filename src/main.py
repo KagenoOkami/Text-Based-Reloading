@@ -42,7 +42,7 @@ def on_release(key):
         # Stop listener
         return False
     
-    elif type(key.char) != type(c):
+    elif 'char' not in key.__dict__:
         return
     elif key.char == '1':
         # (inventory[0], inhand) = (inhand, inventory[0])
