@@ -23,9 +23,9 @@ class Pump_Action(Weapon):
     doables = { "j" : lambda self : self.action_fire(),
                 "k" : lambda self : self.action_load_round(),
                 "i" : lambda self : self.action_load_chamber(),
-                "v" : lambda self : self.action_open_bolt(),
-                "f" : lambda self : self.action_open_bolt_half(),
-                "r" : lambda self : self.action_close_bolt(),
+                "v" : lambda self : self.action_move_bolt(enum_bolt_position.open),
+                "f" : lambda self : self.action_move_bolt(enum_bolt_position.half),
+                "r" : lambda self : self.action_move_bolt(enum_bolt_position.closed),
                 "s" : lambda self : self.action_look()
                 }
 
@@ -73,33 +73,37 @@ class Pump_Action(Weapon):
         else:
             print("Hammer was already cocked")
             
-    def action_open_bolt(self, toPosition = enum_bolt_position.open):
+    def action_move_bolt(self, toPosition):
         
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.open
-            print("Opened bolt")
-            self.action_cock_hammer()
-            # When the bolt is drawn fully, anything in the chamber is ejected regardless
-            self.action_eject_chamber()
-        else:
-            print("The bolt is already open")
-    
-    
-    def action_open_bolt_half(self, toPosition = enum_bolt_position.half):
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.closed:
+            if self.bolt_position != toPosition:
+                if self.bolt_position != enum_bolt_position.half:
+                    self.chamber_from_magazine()
+                    
+                self.bolt_position = enum_bolt_position.closed
+                print("Closed bolt")
+            else:
+                print("Bolt is already closed")
         
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.half
-            print("Half opened bolt")
-        else:
-            print("The bolt is already half open")
-    
-    def action_close_bolt(self, toPosition = enum_bolt_position.closed):
-        if self.bolt_position != toPosition:
-            self.bolt_position = enum_bolt_position.closed
-            self.chamber_from_magazine()
-            print("Closed bolt")
-        else:
-            print("The bolt is already closed")
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.half:
+            if self.bolt_position != toPosition:
+                self.bolt_position = enum_bolt_position.half
+                print("Bolt opened partially")
+            else:
+                print("Bolt is already partially open")
+                
+        #------------------------------------------------------------------
+        if toPosition == enum_bolt_position.open:
+            if self.bolt_position != toPosition:
+                self.bolt_position = enum_bolt_position.open
+                print("Bolt opened")
+                self.action_cock_hammer()
+                # When the bolt is drawn fully, anything in the chamber is ejected regardless
+                self.action_eject_chamber()
+            else:
+                print("Bolt is already open")
     
     def action_look(self):
         if self.bolt_position != enum_bolt_position.closed:
@@ -110,7 +114,7 @@ class Pump_Action(Weapon):
             else:
                 print("Magazine is empty")
         else:
-            print("The action is closed. Not much to look at.")
+            print("Bolt is closed. Not much to look at.")
             
             
             
