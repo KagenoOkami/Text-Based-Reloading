@@ -174,7 +174,7 @@ class Bolt_Action_Rifle(Weapon):
     
     def action_load_clip(self, clip = []):
         
-        if self.bolt_position[0] == enum_bolt_position.open:
+        if self.bolt_position == enum_bolt_position.open:
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
