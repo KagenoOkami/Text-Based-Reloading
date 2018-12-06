@@ -46,7 +46,7 @@ class Self_Chambering_Pistol(Weapon):
         print("Made a self chambering type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
-        return "Captured rerp function, but didn't implement it yet"
+        return self.name
 
     def action_fire(self):
         

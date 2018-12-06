@@ -36,7 +36,7 @@ class Revolver(Weapon):
 		print("Made a revolver type weapon \"" +self.name+"\"" )
 
 	def __repr__(self):
-		return "Captured rerp function, but didn't implement it yet"
+		return self.name
 
 	def action_fire(self):
 		print("Firing", self.name)

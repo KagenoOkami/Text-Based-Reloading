@@ -4,6 +4,9 @@ import Bolt_Action
 import Pump_Action
 import Self_Chambering
 
+from Ammunitions import Magazine
+from Ammunitions import Clip
+
 
 revolver = Revolvers.Revolver( name = "Revolver" )
 shotgun =  Break_Action.Shotgun( name = "Double Barrel Shotgun", barrel_count = 2 )
@@ -12,7 +15,8 @@ shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size 
 pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
 
-inhand = shotgun2
+inhand = None
+secondhand = None
 
 inventory = [None]*10
 
@@ -28,6 +32,9 @@ def on_press(key):
 
 def on_release(key):
     global inhand
+    global secondhand
+    
+    global inventory
     
     global revolver
     global shotgun
@@ -43,27 +50,26 @@ def on_release(key):
         # Stop listener
         return False
     
-    elif 'char' not in key.__dict__:
+    elif 'char' in key.__dict__:
+        
+        if key.char in ['1','2','3','4','5']:
+            
+            #Pull item out of inventory and put in hand
+            if inventory[int(key.char)-1] != None and inhand == None:
+                # (inventory[0], inhand) = (inhand, inventory[0])
+                
+                inhand = inventory[0]
+                print("Picked", inhand.name)
+            
+            #Take out of hand and put in inventory
+            elif inventory[int(key.char)-1] == None and inhand != None:
+    
+    #If it isn't a character, it shouldn't do anything here        
+    else:
         return
-    elif key.char == '1':
-        # (inventory[0], inhand) = (inhand, inventory[0])
-        inhand = revolver
-        print("Picked", inhand.name)
-    elif key.char == '2':
-        inhand = shotgun
-        print("Picked", inhand.name)
-    elif key.char == '3':
-        inhand = bolt_action_rifle
-        print("Picked", inhand.name)
-    elif key.char == '4':
-        inhand = shotgun2
-        print("Picked", inhand.name)
-    elif key.char == '5':
-        inhand = pistol
-        print("Picked", inhand.name)
         
     # Goes last; weapons should never overwrite non-weapon actions
-    elif key.char in inhand.doables.keys():
+    if key.char in inhand.doables.keys():
         inhand.do(key.char, "")
         
     else:

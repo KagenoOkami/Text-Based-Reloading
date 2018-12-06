@@ -5,7 +5,7 @@ from test.support import temp_cwd
 
 class Magazine():
     magazine = []
-    def __init(self, magazine_size=9):
+    def __init(self, magazine_size=9, contents = []):
         self.magazine = [Cardridge()]*magazine_size
         pass
     

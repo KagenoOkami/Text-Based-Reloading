@@ -43,7 +43,7 @@ class Shotgun(Weapon):
         print("Made a Break Action type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
-        return "Captured rerp function, but didn't implement it yet"
+        return self.name
 
     def action_fire(self, barrel = 'n'):
         

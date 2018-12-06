@@ -43,7 +43,7 @@ class Bolt_Action_Rifle(Weapon):
         print("Made a bolt action type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
-        return "Captured rerp function, but didn't implement it yet"
+        return self.name
 
     def action_fire(self):
         
