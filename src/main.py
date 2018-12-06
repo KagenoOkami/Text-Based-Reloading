@@ -12,11 +12,12 @@ shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size 
 pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
 
-inhand = bolt_action_rifle
+inhand = shotgun2
 
 inventory = [None]*10
 
 print("")
+print("Picked", inhand.name)
 
 
 from pynput.keyboard import Key, Listener, KeyCode
@@ -47,19 +48,19 @@ def on_release(key):
     elif key.char == '1':
         # (inventory[0], inhand) = (inhand, inventory[0])
         inhand = revolver
-        print("Picked revolver")
+        print("Picked", inhand.name)
     elif key.char == '2':
         inhand = shotgun
-        print("Picked shotgun")
+        print("Picked", inhand.name)
     elif key.char == '3':
         inhand = bolt_action_rifle
-        print("Picked bolt_action_rifle")
+        print("Picked", inhand.name)
     elif key.char == '4':
         inhand = shotgun2
-        print("Picked shotgun2")
+        print("Picked", inhand.name)
     elif key.char == '5':
         inhand = pistol
-        print("Picked pistol")
+        print("Picked", inhand.name)
         
     # Goes last; weapons should never overwrite non-weapon actions
     elif key.char in inhand.doables.keys():
