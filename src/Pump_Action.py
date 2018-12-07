@@ -29,7 +29,7 @@ class Pump_Action(Weapon):
                 "s" : lambda self : self.action_look()
                 }
 
-    def __init__( self, name = "Default", magazine_size = 5 ):
+    def __init__( self, theplayer, name = "Default", magazine_size = 5 ):
         
         self.name = name
         
@@ -137,7 +137,7 @@ class Pump_Action(Weapon):
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
-                self.magazine.append(Cardridge())
+                self.magazine.append(theplayer.getCartridge())
                 
             else:
                 print("The magazine is full")

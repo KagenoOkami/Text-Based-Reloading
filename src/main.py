@@ -4,23 +4,30 @@ import Bolt_Action
 import Pump_Action
 import Self_Chambering
 
-import Player
+import Ammunitions
 
-from Ammunitions import Magazine
-from Ammunitions import Clip
+import Weapons
 
+from inventoryitem import Item
+
+import PlayerCharacter
+
+theplayer = PlayerCharacter.Player()
 
 revolver = Revolvers.Revolver( name = "Revolver" )
 shotgun =  Break_Action.Shotgun( name = "Double Barrel Shotgun", barrel_count = 2 )
 bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle( name = "Bolt Action Rifle", magazine_size = 3)
-shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size = 3)
+shotgun2 = Pump_Action.Pump_Action( theplayer, name = "Pump Action Shotgun", magazine_size = 3)
 pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
-player = Player()
+theplayer.inhand = shotgun2
+theplayer.inventory[1] = Ammunitions.Magazine()
 
 print("")
-if inhand != None:
-    print("Picked", inhand.name)
+
+print(isinstance(theplayer.inventory[1], Ammunitions.Magazine ))
+
+print("")
 
 
 from pynput.keyboard import Key, Listener, KeyCode
@@ -30,21 +37,7 @@ def on_press(key):
     pass
 
 def on_release(key):
-    global inhand
-    global secondhand
-    global pouch
-    
-    global inventory
-    
-    global revolver
-    global shotgun
-    global bolt_action_rifle
-    global shotgun2
-    global pistol
-    
-    
-    
-    #
+    global theplayer
         
     if key == Key.esc:
         # Stop listener
@@ -53,22 +46,23 @@ def on_release(key):
     elif 'char' in key.__dict__:
         
         if str(key.char) in ["1","2","3","4","5","6","7","8","9"]:
-            Player.keyasint = int(key.char)
+            keyasint = int(key.char)
+            theplayer.inventory_management(keyasint)
             
             
                 
         elif key.char == '`':
-            print( inventory )
-            print( "inhand:", inhand )
+            print( theplayer.inventory )
+            print( "inhand:", theplayer.inhand )
             return
         
         
         
-        elif key.char in inhand.doables.keys():
-            inhand.do(key.char, self)
+        elif key.char in theplayer.inhand.doables.keys():
+            theplayer.pass_action(key.char)
             return   
             
-    #If it isn't a character, it shouldn't do anything here        
+    #If it isn't a character, it shouldn't do anything, least of all not crash everything        
     else:
         return
 
@@ -78,23 +72,6 @@ with Listener(
         on_release=on_release) as listener:
         listener.join()
 
-
-
-
-'''
-while True:
-    var = input(inhand.name+":").lower().strip()
-    
-    # var_temp = var.split()
-    
-    # var, arg = var_temp[0], var_temp[1:]
-    arg = ""
-    
-    if var == "exit":
-        loop = False
-    else:
-        inhand.do(var, arg)
-'''
 
 
 
