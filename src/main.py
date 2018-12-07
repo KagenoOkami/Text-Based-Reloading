@@ -4,6 +4,8 @@ import Bolt_Action
 import Pump_Action
 import Self_Chambering
 
+import Player
+
 from Ammunitions import Magazine
 from Ammunitions import Clip
 
@@ -14,14 +16,11 @@ bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle( name = "Bolt Action Rifle", m
 shotgun2 = Pump_Action.Pump_Action( name = "Pump Action Shotgun", magazine_size = 3)
 pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
 
-
-inhand = None
-secondhand = None
-
-inventory = [None]*10
+player = Player()
 
 print("")
-print("Picked", inhand.name)
+if inhand != None:
+    print("Picked", inhand.name)
 
 
 from pynput.keyboard import Key, Listener, KeyCode
@@ -33,6 +32,7 @@ def on_press(key):
 def on_release(key):
     global inhand
     global secondhand
+    global pouch
     
     global inventory
     
@@ -52,28 +52,25 @@ def on_release(key):
     
     elif 'char' in key.__dict__:
         
-        if key.char in ['1','2','3','4','5']:
+        if str(key.char) in ["1","2","3","4","5","6","7","8","9"]:
+            Player.keyasint = int(key.char)
             
-            #Pull item out of inventory and put in hand
-            if inventory[int(key.char)-1] != None and inhand == None:
-                # (inventory[0], inhand) = (inhand, inventory[0])
+            
                 
-                inhand = inventory[0]
-                print("Picked", inhand.name)
+        elif key.char == '`':
+            print( inventory )
+            print( "inhand:", inhand )
+            return
+        
+        
+        
+        elif key.char in inhand.doables.keys():
+            inhand.do(key.char, self)
+            return   
             
-            #Take out of hand and put in inventory
-            elif inventory[int(key.char)-1] == None and inhand != None:
-    
     #If it isn't a character, it shouldn't do anything here        
     else:
         return
-        
-    # Goes last; weapons should never overwrite non-weapon actions
-    if key.char in inhand.doables.keys():
-        inhand.do(key.char, "")
-        
-    else:
-        print(key.char, "pressed - not an action")
 
 # Collect events until released
 with Listener(
