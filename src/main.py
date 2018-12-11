@@ -14,18 +14,18 @@ import PlayerCharacter
 
 theplayer = PlayerCharacter.Player()
 
-revolver = Revolvers.Revolver( name = "Revolver" )
-shotgun =  Break_Action.Shotgun( name = "Double Barrel Shotgun", barrel_count = 2 )
-bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle( name = "Bolt Action Rifle", magazine_size = 3)
+revolver = Revolvers.Revolver(theplayer, name = "Revolver" )
+shotgun =  Break_Action.Shotgun(theplayer, name = "Double Barrel Shotgun", barrel_count = 2 )
+bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle(theplayer, name = "Bolt Action Rifle", magazine_size = 3)
 shotgun2 = Pump_Action.Pump_Action( theplayer, name = "Pump Action Shotgun", magazine_size = 3)
-pistol = Self_Chambering.Self_Chambering_Pistol( name = "Semi-Auto Pistol", magazine_size = 9)
+pistol = Self_Chambering.Self_Chambering_Pistol(theplayer, name = "Semi-Auto Pistol", magazine_size = 9)
 
-theplayer.inhand = shotgun2
-theplayer.inventory[1] = Ammunitions.Magazine()
+theplayer.inhand = bolt_action_rifle
+theplayer.inventory[0] = Ammunitions.Magazine()
+theplayer.inventory[1] = Ammunitions.Clip()
+theplayer.inventory[2] = Ammunitions.Clip()
 
 print("")
-
-print(isinstance(theplayer.inventory[1], Ammunitions.Magazine ))
 
 print("")
 
@@ -53,7 +53,8 @@ def on_release(key):
                 
         elif key.char == '`':
             print( theplayer.inventory )
-            print( "inhand:", theplayer.inhand )
+            print( "Right hand:", theplayer.inhand )
+            print( "Left  hand:", theplayer.secondhand )
             return
         
         

@@ -28,7 +28,8 @@ class Revolver(Weapon):
 			    "o" : lambda self : self.action_rotate_cylinder(1)
 				}
 
-	def __init__( self, name = "Default", is_doubleAction = True ):
+	def __init__( self, theplayer, name = "Default", is_doubleAction = True ):
+		self.theplayer = theplayer
 		
 		self.name = name
 		self.is_doubleAction = is_doubleAction

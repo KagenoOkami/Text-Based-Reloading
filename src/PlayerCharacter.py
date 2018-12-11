@@ -17,19 +17,19 @@ class Player():
     pouch = 10 # Bullets
     
     def inventory_management(self, slot):
-
+        slot-=1
         #Pull item out of inventory and put in hand
-        if inventory[keyasint-1] != None:
-            if isinstance(self.inventory[keyasint-1], Ammunitions.Magazine):
+        if self.inventory[slot] != None:
+            if isinstance(self.inventory[slot], Magazine):
                 if self.inhand == None:
-                    self.inhand = inventory[keyasint-1]
-                    self.inventory[keyasint-1] = None
-                    print("put", inhand, "in hand")
+                    self.inhand = self.inventory[slot]
+                    self.inventory[slot] = None
+                    print("put", self.inhand, "in hand")
                     return
                 elif self.secondhand == None:
-                    self.secondhand = inventory[keyasint-1]
-                    self.inventory[keyasint-1] = None
-                    print("put", secondhand, "in second hand")
+                    self.secondhand = self.inventory[slot]
+                    self.inventory[slot] = None
+                    print("put", self.secondhand, "in second hand")
                     return
                 else:
                     print("something is already in both hands")
@@ -37,8 +37,8 @@ class Player():
                     
             else:
                 if self.inhand == None:
-                    self.inhand = inventory[keyasint-1]
-                    self.inventory[keyasint-1] = None
+                    self.inhand = self.inventory[slot]
+                    self.inventory[slot] = None
                     print("put", self.inhand, "in hand")
                     return
                 else:
@@ -47,13 +47,18 @@ class Player():
             
         #Take out of hand and put in inventory
         else:
-            if self.inhand != None:
-                inventory[keyasint-1] = inhand
-                print("Put", self.inventory[keyasint-1], "in inventory slot", keyasint)
+            if self.secondhand != None:
+                self.inventory[slot] = self.secondhand
+                print("Put", self.inventory[slot], "in inventory slot", slot)
+                self.secondhand = None
+                return
+            elif self.inhand != None:
+                self.inventory[slot] = self.inhand
+                print("Put", self.inventory[slot], "in inventory slot", slot)
                 self.inhand = None
                 return
             else:
-                print("There's already something in this slot")
+                print("Hands are empty")
                 return
 
     def pass_action(self, command):

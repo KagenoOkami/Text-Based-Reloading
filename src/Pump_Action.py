@@ -30,6 +30,7 @@ class Pump_Action(Weapon):
                 }
 
     def __init__( self, theplayer, name = "Default", magazine_size = 5 ):
+        self.theplayer = theplayer
         
         self.name = name
         

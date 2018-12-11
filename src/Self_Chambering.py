@@ -26,11 +26,12 @@ class Self_Chambering_Pistol(Weapon):
                 "f" : lambda self : self.action_move_bolt(enum_bolt_position.half),
                 "r" : lambda self : self.action_move_bolt(enum_bolt_position.closed),
                 "s" : lambda self : self.action_look(),
-                "k" : lambda self : self.action_load_magazine( [Cardridge()]*4 ),
+                "k" : lambda self : self.action_load_magazine(),
                 "," : lambda self : self.action_eject_magazine()
                 }
 
-    def __init__( self, name = "Default", magazine_size = 5, action_type = enum_action_type.DAR ):
+    def __init__( self, theplayer, name = "Default", magazine_size = 5, action_type = enum_action_type.DAR ):
+        self.theplayer = theplayer
         
         self.name = name
         
@@ -50,7 +51,7 @@ class Self_Chambering_Pistol(Weapon):
 
     def action_fire(self):
         
-        print("Firing rifle")
+        print("Firing", self.name)
             
         if self.bolt_position == enum_bolt_position.closed:
             if self.action_type==enum_action_type.DAT:
@@ -60,11 +61,11 @@ class Self_Chambering_Pistol(Weapon):
                 self.is_hammer_cocked = False
                 
                 if type(self.chamber) == type(Cardridge()):
-                    if self.chamber.bullet:
+                    if self.chamber.primer:
                         print("Firing round")
                         self.chamber.fire()
                         
-                        if len(self.magazine):
+                        if len(self.magazine.magazine):
                             self.action_move_bolt(enum_bolt_position.open)
                         else:
                             self.action_move_bolt(enum_bolt_position.locked)
@@ -148,18 +149,18 @@ class Self_Chambering_Pistol(Weapon):
         
         # The self_chambering weapon doesn't need to open the bolt manually, because the bolt isn't locked and slides forward on it's own.
         print("Chamber:",self.chamber)
-        print("debug: Magazine:", self.magazine)
+        print("debug: Magazine:", self.magazine.look())
         if self.magazine:
-            print("Magazine:",self.magazine)
+            print("Magazine:",self.magazine.look())
         else:
             print("Magazine is empty")
             
             
             
     def chamber_from_magazine(self):
-        if len(self.magazine):
+        if self.magazine != None and len(self.magazine.data()):
             if self.chamber == None:
-                self.chamber = self.magazine.pop()
+                self.chamber = self.magazine.magazine.pop()
                 print("Loaded round to chamber from magazine")
                 return True
             else:
@@ -168,22 +169,28 @@ class Self_Chambering_Pistol(Weapon):
         else:
             print("magazine is empty")
     
-    def action_load_magazine(self, new_magazine):
+    def action_load_magazine(self):
+        global theplayer
         
         if self.magazine == None:
-            
-            print("Loading magazine into gun", new_magazine)
-            self.magazine = new_magazine
+            if self.theplayer.secondhand != None:
+                print("Loading magazine into gun", self.theplayer.secondhand.data())
+                self.magazine = self.theplayer.secondhand
+                self.theplayer.secondhand = None
+            else:
+                print("Left hand is empty")
         else:
             print("Magazine slot is occupied")
             
     def action_eject_magazine(self):
         
         if self.magazine != None:
-            print("Ejecting magazine")
-            temp = self.magazine
-            self.magazine = None
-            return temp
+            if self.theplayer.secondhand == None:
+                print("Ejecting magazine")
+                self.theplayer.secondhand = self.magazine
+                self.magazine = None
+            else:
+                print("Left hand is not empty")
         else:
             print("Magazine slot was already empty")
             

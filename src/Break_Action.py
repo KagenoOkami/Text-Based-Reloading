@@ -33,7 +33,8 @@ class Shotgun(Weapon):
                 "s" : lambda self : self.action_lookat_action()
                 }
 
-    def __init__( self, name = "Default", is_doubleAction = False, barrel_count = 1 ):
+    def __init__( self, theplayer, name = "Default", is_doubleAction = False, barrel_count = 1 ):
+        self.theplayer = theplayer
         
         self.name = name
         self.is_doubleAction = is_doubleAction
