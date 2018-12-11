@@ -4,6 +4,7 @@ from Weapons import enum_bolt_position
 from Weapons import enum_bolt_rotation
 
 from Ammunitions import Cardridge
+from Ammunitions import Clip
 
 
 
@@ -24,7 +25,7 @@ class Bolt_Action_Rifle(Weapon):
     doables = { "j" : lambda self : self.action_fire(),
                 "i" : lambda self : self.action_load_chamber(),
                 "k" : lambda self : self.action_load_round(),
-                "," : lambda self : self.action_load_clip([Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]),
+                "," : lambda self : self.action_load_clip(),
                 "v" : lambda self : self.action_move_bolt(enum_bolt_position.open),
                 "f" : lambda self : self.action_move_bolt(enum_bolt_position.half),
                 "r" : lambda self : self.action_move_bolt(enum_bolt_position.closed),
@@ -32,7 +33,8 @@ class Bolt_Action_Rifle(Weapon):
                 "s" : lambda self : self.action_look()
                 }
 
-    def __init__( self, name = "Default", magazine_size = 5 ):
+    def __init__( self, theplayer, name = "Default", magazine_size = 5 ):
+        self.theplayer = theplayer
         
         self.name = name
         
@@ -43,7 +45,7 @@ class Bolt_Action_Rifle(Weapon):
         print("Made a bolt action type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
-        return "Captured rerp function, but didn't implement it yet"
+        return self.name
 
     def action_fire(self):
         
@@ -52,7 +54,7 @@ class Bolt_Action_Rifle(Weapon):
                 self.is_hammer_cocked = False
 
                 if type(self.chamber) == type(Cardridge()):
-                    if self.chamber.bullet:
+                    if self.chamber.primer:
                         print("Firing round")
                         self.chamber.fire()
                         
@@ -126,7 +128,7 @@ class Bolt_Action_Rifle(Weapon):
                 print("Bolt is already locked")
     
     def action_look(self):
-        if self.bolt_position[0] != enum_bolt_position.closed:
+        if self.bolt_position != enum_bolt_position.closed:
             print("Chamber:",self.chamber)
             print("debug: Magazine:", self.magazine)
             if self.magazine:
@@ -172,19 +174,21 @@ class Bolt_Action_Rifle(Weapon):
         else:
             print("Can't load cartridges if the action is closed.")
     
-    def action_load_clip(self, clip = []):
-        
-        if self.bolt_position == enum_bolt_position.open:
-            if len(self.magazine) < self.magazine_size:
-                
-                print("Loading cartridge into magazine")
-                while len(self.magazine) < self.magazine_size:
-                    self.magazine.append(clip.pop())
-                
+    def action_load_clip(self):
+        if isinstance(self.theplayer.secondhand, Clip):
+            if self.bolt_position == enum_bolt_position.open:
+                if len(self.magazine) < self.magazine_size:
+                    
+                    print("Loading cartridge into magazine")
+                    while len(self.magazine) < self.magazine_size and len(self.theplayer.secondhand.data()):
+                        self.magazine.append(self.theplayer.secondhand.data().pop())
+                    
+                else:
+                    print("The magazine is full")
             else:
-                print("The magazine is full")
+                print("Can't load cartridges if the action is closed.")
         else:
-            print("Can't load cartridges if the action is closed.")
+            print("No clip in left hand")
             
     def action_eject_chamber(self):
         

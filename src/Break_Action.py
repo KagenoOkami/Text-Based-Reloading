@@ -33,7 +33,8 @@ class Shotgun(Weapon):
                 "s" : lambda self : self.action_lookat_action()
                 }
 
-    def __init__( self, name = "Default", is_doubleAction = False, barrel_count = 1 ):
+    def __init__( self, theplayer, name = "Default", is_doubleAction = False, barrel_count = 1 ):
+        self.theplayer = theplayer
         
         self.name = name
         self.is_doubleAction = is_doubleAction
@@ -43,7 +44,7 @@ class Shotgun(Weapon):
         print("Made a Break Action type weapon \"" +self.name+"\"" )
 
     def __repr__(self):
-        return "Captured rerp function, but didn't implement it yet"
+        return self.name
 
     def action_fire(self, barrel = 'n'):
         
@@ -58,7 +59,7 @@ class Shotgun(Weapon):
                 if self.is_action_open == False:
                     
                     if type(self.barrels[barrel]) == type(Cardridge()):
-                        if self.barrels[barrel].bullet:
+                        if self.barrels[barrel].primer:
                             print("Firing round")
                             self.barrels[barrel].fire()
                                 

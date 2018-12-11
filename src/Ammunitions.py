@@ -1,67 +1,71 @@
-from test.support import temp_cwd
+from inventoryitem import Item
 
 
-
-
-class Magazine():
+class Magazine(Item):
     magazine = []
-    def __init(self, magazine_size=9):
-        self.magazine = [Cardridge()]*magazine_size
+    name = "Magazine"
+    
+    def __init__(self):
+        self.magazine = [Cardridge() for x in range(4)]
+        '''
+        if contents == None:
+            for dummy in range(magazine_size):
+                self.magazine.append(Cardridge(True))
+        else:
+            self.magazine = contents
+        '''
+    
+    def __repr__(self):
+        return self.name
+    
+    def do(self):
+        pass
+    
+    def look(self):
+        return self.magazine
+    
+    def data(self):
+        return self.magazine
+        
+    
+class Clip(Item):
+    clip = []
+    name = "Clip"
+    def __init__(self):
+        self.clip = [Cardridge() for x in range(5)]
         pass
     
     def __repr__(self):
-        temp = "["
-        for thing in self.magazine:
-            temp += thing.__repr__()+" "
-        temp += "]"
-        return temp
+        return self.name
     
-class Clip():
-    clip = []
-    def __init__(self, clip_size=5):
-        self.clip = [Cardridge()]*clip_size
-        pass
+    def look(self):
+        return self.clip
+    
+    def data(self):
+        return self.clip
 
-class Cardridge():
+class Cardridge(Item):
     
     primer = True
-#    bullet = True
-    diameter = 0
-    length = 0
+    
+    name = "bullet"
     
     
-    def __init__(self,primer=True,bullet=True,diameter=0,length=0):
+    def __init__(self, primer=True):
         self.primer = primer
-        self.bullet = bullet
-        self.diameter = diameter
-        self.length = length 
     
     def fire(self):
         if self.primer == True:
             self.primer = False
-#            if self.bullet == True:
-#                self.bullet = None
             return True
         
         return False
     
     def __repr__(self):
-        temp = ""
-        '''
         if self.primer == True:
-            temp += "|"
+            return "O"
         else:
-            temp += ">"
-        temp += "="
-        if self.bullet != None:
-            temp += "o"
-        '''
-        if self.primer == True:
-            temp += "O"
-        else:
-            temp += "X"
-            
-        return temp
+            return "X"
     
     
 
