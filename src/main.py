@@ -22,8 +22,9 @@ pistol = Self_Chambering.Self_Chambering_Pistol(theplayer, name = "Semi-Auto Pis
 
 theplayer.inhand = bolt_action_rifle
 theplayer.inventory[0] = Ammunitions.Magazine()
-theplayer.inventory[1] = Ammunitions.Clip()
+theplayer.inventory[1] = Ammunitions.Magazine()
 theplayer.inventory[2] = Ammunitions.Clip()
+theplayer.inventory[3] = Ammunitions.Clip()
 
 print("")
 

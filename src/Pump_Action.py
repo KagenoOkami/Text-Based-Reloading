@@ -53,7 +53,7 @@ class Pump_Action(Weapon):
                 
 
                 if type(self.chamber) == type(Cardridge()):
-                    if self.chamber.bullet:
+                    if self.chamber.primer:
                         print("Firing round")
                         self.chamber.fire()
                         

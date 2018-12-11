@@ -54,7 +54,7 @@ class Bolt_Action_Rifle(Weapon):
                 self.is_hammer_cocked = False
 
                 if type(self.chamber) == type(Cardridge()):
-                    if self.chamber.bullet:
+                    if self.chamber.primer:
                         print("Firing round")
                         self.chamber.fire()
                         
@@ -128,11 +128,11 @@ class Bolt_Action_Rifle(Weapon):
                 print("Bolt is already locked")
     
     def action_look(self):
-        if self.bolt_position[0] != enum_bolt_position.closed:
+        if self.bolt_position != enum_bolt_position.closed:
             print("Chamber:",self.chamber)
             print("debug: Magazine:", self.magazine)
             if self.magazine:
-                print("Magazine:",self.magazine.look())
+                print("Magazine:",self.magazine)
             else:
                 print("Magazine is empty")
         else:
@@ -180,7 +180,7 @@ class Bolt_Action_Rifle(Weapon):
                 if len(self.magazine) < self.magazine_size:
                     
                     print("Loading cartridge into magazine")
-                    while len(self.magazine) < self.magazine_size:
+                    while len(self.magazine) < self.magazine_size and len(self.theplayer.secondhand.data()):
                         self.magazine.append(self.theplayer.secondhand.data().pop())
                     
                 else:

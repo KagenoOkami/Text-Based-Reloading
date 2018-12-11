@@ -1,6 +1,7 @@
 
 
 from Ammunitions import Magazine
+from Ammunitions import Clip
 
 from inventoryitem import Item
 
@@ -20,7 +21,7 @@ class Player():
         slot-=1
         #Pull item out of inventory and put in hand
         if self.inventory[slot] != None:
-            if isinstance(self.inventory[slot], Magazine):
+            if isinstance(self.inventory[slot], Magazine) or isinstance(self.inventory[slot], Clip):
                 if self.inhand == None:
                     self.inhand = self.inventory[slot]
                     self.inventory[slot] = None

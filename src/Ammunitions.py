@@ -6,7 +6,7 @@ class Magazine(Item):
     name = "Magazine"
     
     def __init__(self):
-        self.magazine = [Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]
+        self.magazine = [Cardridge() for x in range(4)]
         '''
         if contents == None:
             for dummy in range(magazine_size):
@@ -32,7 +32,7 @@ class Clip(Item):
     clip = []
     name = "Clip"
     def __init__(self):
-        self.clip = [Cardridge(),Cardridge(),Cardridge(),Cardridge(),Cardridge()]
+        self.clip = [Cardridge() for x in range(5)]
         pass
     
     def __repr__(self):

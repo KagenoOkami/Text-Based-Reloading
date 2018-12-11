@@ -59,7 +59,7 @@ class Shotgun(Weapon):
                 if self.is_action_open == False:
                     
                     if type(self.barrels[barrel]) == type(Cardridge()):
-                        if self.barrels[barrel].bullet:
+                        if self.barrels[barrel].primer:
                             print("Firing round")
                             self.barrels[barrel].fire()
                                 
