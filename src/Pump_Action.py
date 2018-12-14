@@ -138,7 +138,7 @@ class Pump_Action(Weapon):
             if len(self.magazine) < self.magazine_size:
                 
                 print("Loading cartridge into magazine")
-                self.magazine.append(theplayer.getCartridge())
+                self.magazine.append(Cardridge())
                 
             else:
                 print("The magazine is full")

@@ -74,13 +74,15 @@ class Shotgun(Weapon):
                 
         
         else:
-            #Fire a barrel that isn't cocked
+            #Fire a barrel that is cocked
             if self.is_hammer_cocked[0] == True:
                 self.action_fire(0)
                 return
             elif self.is_hammer_cocked[1] == True:
                 self.action_fire(1)
                 return
+            else:
+                print("No hammer cocked")
 
     def action_cock_hammer(self, barrel = 'b'):
         

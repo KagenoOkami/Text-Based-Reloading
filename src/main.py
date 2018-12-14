@@ -20,11 +20,17 @@ bolt_action_rifle = Bolt_Action.Bolt_Action_Rifle(theplayer, name = "Bolt Action
 shotgun2 = Pump_Action.Pump_Action( theplayer, name = "Pump Action Shotgun", magazine_size = 3)
 pistol = Self_Chambering.Self_Chambering_Pistol(theplayer, name = "Semi-Auto Pistol", magazine_size = 9)
 
-theplayer.inhand = bolt_action_rifle
+theplayer.inhand = None
+theplayer.secondhand = None
 theplayer.inventory[0] = Ammunitions.Magazine()
 theplayer.inventory[1] = Ammunitions.Magazine()
 theplayer.inventory[2] = Ammunitions.Clip()
 theplayer.inventory[3] = Ammunitions.Clip()
+theplayer.inventory[4] = revolver
+theplayer.inventory[5] = shotgun
+theplayer.inventory[6] = bolt_action_rifle
+theplayer.inventory[7] = shotgun2
+theplayer.inventory[8] = pistol
 
 print("")
 
@@ -60,7 +66,7 @@ def on_release(key):
         
         
         
-        elif key.char in theplayer.inhand.doables.keys():
+        elif theplayer.inhand != None and key.char in theplayer.inhand.doables.keys():
             theplayer.pass_action(key.char)
             return   
             
